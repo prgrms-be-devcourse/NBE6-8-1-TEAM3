@@ -7,6 +7,8 @@ import com.backend.api.v1.orders.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class TestDataFactory {
     @Autowired
@@ -15,7 +17,12 @@ public class TestDataFactory {
     OrderItemRepository orderItemRepository;
 
     public Orders createOrder() {
-        Orders order = new Orders();
+        String email = "test@example.com";
+        LocalDateTime ordersDate = LocalDateTime.now();
+        int totalPrice = 15000;
+        boolean orderStatus = false;
+
+        Orders order = new Orders(email, ordersDate, totalPrice, orderStatus);
         return orderRepository.save(order);
     }
 
