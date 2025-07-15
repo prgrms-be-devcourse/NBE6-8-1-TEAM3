@@ -2,6 +2,29 @@
 
 import React, { useState } from "react";
 
+type ProductInfoProps = {
+    productList : string[];
+    handleAddToCart : (product: string) => void
+};
+
+{/* 상품 목록 */}
+function ProductInfo({ productList, handleAddToCart }: ProductInfoProps) {
+    return (
+    <section className="md:w-2/3 w-full">
+                    <h2 className="text-2xl font-semibold mb-4">상품목록</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {productList.map((product, index) => (
+                            <div key = {index} 
+                            onClick={() => handleAddToCart(product)}
+                            className="p-4 border rounded-lg shadow hover:shadow-md transition cursor-pointer hover:bg-gray-100">
+                                {product}
+                            </div>
+                        ))}
+                    </div>
+                </section>
+    )
+}
+
 export default function Page() {
     type CartItem = {
         name : String;
@@ -42,19 +65,11 @@ export default function Page() {
     
             <div className="flex flex-col md:flex-row gap-8">
 
-                {/* 상품 목록 */}
-                <section className="md:w-2/3 w-full">
-                    <h2 className="text-2xl font-semibold mb-4">상품목록</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {productList.map((product, index) => (
-                            <div key = {index} 
-                            onClick={() => handleAddToCart(product)}
-                            className="p-4 border rounded-lg shadow hover:shadow-md transition cursor-pointer hover:bg-gray-100">
-                                {product}
-                            </div>
-                        ))}
-                    </div>
-                </section>
+                
+                <ProductInfo
+                    productList={productList}
+                    handleAddToCart={handleAddToCart}
+                />
     
                 {/* 장바구니 / 주문 폼 */}
                 <section className="md:w-1/3 w-full">
