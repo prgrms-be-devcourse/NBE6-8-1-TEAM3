@@ -16,6 +16,10 @@ type PickedProductInfoProps = {
     cartItems: CartItem[];
 };
 
+type OrderFormProps = {
+    totalPrice: number;
+};
+
 {/* 상품 목록 */}
 function ProductInfo({ productList, handleAddToCart }: ProductInfoProps) {
     return (
@@ -50,6 +54,49 @@ function PickedProductInfo({cartItems} : PickedProductInfoProps) {
                     </div>
     );
 }
+
+{/* 주문 폼 */}
+function OrderForm({totalPrice} : OrderFormProps) {
+    return (
+        <div className="space-y-4">
+                        <div>
+                            <label className="block mb-1 font-medium">이메일</label>
+                            <input
+                                type="text"
+                                className="w-full border-2 border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block mb-1 font-medium">주소</label>
+                            <input
+                                type="text"
+                                className="w-full border-2 border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block mb-1 font-medium">우편주소</label>
+                            <input
+                                type="text"
+                                className="w-full border-2 border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            />
+                        </div>
+
+                        <div className="text-lg font-semibold">
+                            총금액:{" "}
+                            <span className="text-blue-600">
+                                ₩{totalPrice.toLocaleString()}
+                            </span>
+                        </div>
+
+                        <button className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
+                            주문하기
+                        </button>
+                    </div>
+    );
+}
+
 
 export default function Page() {
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -100,42 +147,7 @@ export default function Page() {
                     <PickedProductInfo cartItems={cartItems}/>
 
                     {/* 주문 폼 */}
-                    <div className="space-y-4">
-                        <div>
-                            <label className="block mb-1 font-medium">이메일</label>
-                            <input
-                                type="text"
-                                className="w-full border-2 border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block mb-1 font-medium">주소</label>
-                            <input
-                                type="text"
-                                className="w-full border-2 border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block mb-1 font-medium">우편주소</label>
-                            <input
-                                type="text"
-                                className="w-full border-2 border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            />
-                        </div>
-
-                        <div className="text-lg font-semibold">
-                            총금액:{" "}
-                            <span className="text-blue-600">
-                                ₩{calculateTotal().toLocaleString()}
-                            </span>
-                        </div>
-
-                        <button className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
-                            주문하기
-                        </button>
-                    </div>
+                    <OrderForm totalPrice={calculateTotal()}/>
                 </section>
             </div>
         </div>
