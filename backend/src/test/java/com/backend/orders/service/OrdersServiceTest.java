@@ -46,20 +46,15 @@ public class OrdersServiceTest {
     }
 
     @Test
-    @DisplayName("테스트용 데이터 생성 - orderItem")
+    @DisplayName("테스트용 단건 데이터 생성 - orderItem")
     void createOrderItem() {
-        Orders order = new Orders();
-        Products product = new Products();
-        int totalCount = 2;
-
-        OrderItem orderItem = new OrderItem(order, product, totalCount);
-        orderItemRepository.save(orderItem);
+        OrderItem orderItem = testDataFactory.createOrderItem();
 
         OrderItem findOrderItem = orderItemRepository.findById(orderItem.getOrderItemId())
                 .orElseThrow(() -> new IllegalArgumentException("OrderItem not found"));
 
-        assertThat(findOrderItem.getOrders()).isEqualTo(order);
-        assertThat(findOrderItem.getProducts()).isEqualTo(product);
-        assertThat(findOrderItem.getTotalCount()).isEqualTo(totalCount);
+        assertThat(findOrderItem.getOrders()).isEqualTo(orderItem.getOrders());
+        assertThat(findOrderItem.getProducts()).isEqualTo(orderItem.getProducts());
+        assertThat(findOrderItem.getTotalCount()).isEqualTo(orderItem.getTotalCount());
     }
 }

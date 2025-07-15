@@ -4,6 +4,7 @@ import com.backend.api.v1.orders.entity.OrderItem;
 import com.backend.api.v1.orders.entity.Orders;
 import com.backend.api.v1.orders.repository.OrderItemRepository;
 import com.backend.api.v1.orders.repository.OrderRepository;
+import com.backend.api.v1.products.entity.Products;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +28,11 @@ public class TestDataFactory {
     }
 
     public OrderItem createOrderItem() {
-        OrderItem orderItem = new OrderItem();
+        Orders order = new Orders();
+        Products product = new Products();
+        int totalCount = 2;
+
+        OrderItem orderItem = new OrderItem(order, product, totalCount);
         return orderItemRepository.save(orderItem);
     }
 }
