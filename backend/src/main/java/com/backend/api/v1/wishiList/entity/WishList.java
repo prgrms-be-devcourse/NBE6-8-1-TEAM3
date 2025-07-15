@@ -25,4 +25,5 @@ public class WishList {
     private String email;
     private String address;
     private int totalCount;
+    private int totalPrice;
 }
