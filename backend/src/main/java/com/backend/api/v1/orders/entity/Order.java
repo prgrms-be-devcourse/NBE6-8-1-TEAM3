@@ -18,7 +18,6 @@ import static jakarta.persistence.CascadeType.REMOVE;
 public class Order {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    //외래키
     private int orderId;
 
     private String email;
