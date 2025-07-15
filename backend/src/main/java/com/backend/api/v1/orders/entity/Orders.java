@@ -15,17 +15,16 @@ import static jakarta.persistence.CascadeType.REMOVE;
 @NoArgsConstructor
 @Getter
 @Entity
-public class Order {
+public class Orders {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    //외래키
-    private int orderId;
+    private int ordersId;
 
     private String email;
-    private LocalDateTime order_date;
+    private LocalDateTime ordersDate;
     private int totalPrice;
-    private boolean orderStatus;
+    private boolean ordersStatus;
 
-    @OneToMany(mappedBy = "order", cascade = {PERSIST, REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<OrderItem> OrderItems = new ArrayList<>();
+    @OneToMany(mappedBy = "orders", cascade = {PERSIST, REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<OrderItem> ordersItems = new ArrayList<>();
 }

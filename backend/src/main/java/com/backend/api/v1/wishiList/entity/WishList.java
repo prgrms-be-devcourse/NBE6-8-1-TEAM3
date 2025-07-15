@@ -1,4 +1,4 @@
-package com.backend.api.v1.orders.entity;
+package com.backend.api.v1.wishiList.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
