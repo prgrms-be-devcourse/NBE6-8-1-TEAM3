@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @NoArgsConstructor
@@ -22,4 +24,10 @@ public class OrderItem {
     private Products products;
 
     private int totalCount;
+
+    public OrderItem(Orders orders, Products products, int totalCount) {
+        this.orders = orders;
+        this.products = products;
+        this.totalCount = totalCount;
+    }
 }
