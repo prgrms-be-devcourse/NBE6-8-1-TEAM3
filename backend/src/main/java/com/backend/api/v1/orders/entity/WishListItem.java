@@ -19,7 +19,7 @@ public class WishListItem {
     private WishList wishList;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Products productId;
+    private Products products;
 
     private int count;
 }

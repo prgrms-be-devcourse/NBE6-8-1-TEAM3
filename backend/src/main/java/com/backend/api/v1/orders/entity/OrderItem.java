@@ -19,7 +19,7 @@ public class OrderItem {
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Products productId;
+    private Products products;
 
     private int totalCount;
 }
