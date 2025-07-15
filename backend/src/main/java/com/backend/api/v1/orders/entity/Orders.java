@@ -1,6 +1,7 @@
 package com.backend.api.v1.orders.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,8 +24,15 @@ public class Orders {
     private String email;
     private LocalDateTime ordersDate;
     private int totalPrice;
-    private boolean ordersStatus;
+    private boolean orderStatus;
 
     @OneToMany(mappedBy = "orders", cascade = {PERSIST, REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderItem> ordersItems = new ArrayList<>();
+
+    public Orders(String email, LocalDateTime ordersDate, int totalPrice, boolean orderStatus) {
+        this.email = email;
+        this.ordersDate = ordersDate;
+        this.totalPrice = totalPrice;
+        this.orderStatus = orderStatus;
+    }
 }
