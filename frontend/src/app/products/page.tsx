@@ -7,6 +7,15 @@ type ProductInfoProps = {
     handleAddToCart : (product: string) => void
 };
 
+type CartItem = {
+    name : String;
+    quantity : number;
+}
+
+type PickedProductInfoProps = {
+    cartItems: CartItem[];
+};
+
 {/* 상품 목록 */}
 function ProductInfo({ productList, handleAddToCart }: ProductInfoProps) {
     return (
@@ -25,12 +34,24 @@ function ProductInfo({ productList, handleAddToCart }: ProductInfoProps) {
     )
 }
 
-export default function Page() {
-    type CartItem = {
-        name : String;
-        quantity : number;
-    }
+{/* 선택된 상품 목록 */}
+function PickedProductInfo({cartItems} : PickedProductInfoProps) {
+    return (
+    <div className="mb-4 space-y-2">
+                        {cartItems.length > 0 ? (
+                            cartItems.map((item, index) => (
+                                <div key={index} className="border p-2 rounded bg-white">
+                                    {item.name} x {item.quantity}
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-gray-500">선택된 상품이 없습니다.</p>
+                        )}
+                    </div>
+    );
+}
 
+export default function Page() {
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const productList = ["상품1", "상품2", "상품3"];
     const pricePerItem = 10000;
@@ -76,17 +97,7 @@ export default function Page() {
                     <h2 className="text-2xl font-semibold mb-4">장바구니</h2>
 
                     {/* 선택된 상품 목록 */}
-                    <div className="mb-4 space-y-2">
-                        {cartItems.length > 0 ? (
-                            cartItems.map((item, index) => (
-                                <div key={index} className="border p-2 rounded bg-white">
-                                    {item.name} x {item.quantity}
-                                </div>
-                            ))
-                        ) : (
-                            <p className="text-gray-500">선택된 상품이 없습니다.</p>
-                        )}
-                    </div>
+                    <PickedProductInfo cartItems={cartItems}/>
 
                     {/* 주문 폼 */}
                     <div className="space-y-4">
