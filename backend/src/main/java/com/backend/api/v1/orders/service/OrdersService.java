@@ -47,7 +47,7 @@ public class OrdersService {
         return deliveredOrders;
     }
 
-    public List<Orders> getOrdersInDelivery() {
+    public List<Orders> getDeliveredOrders() {
         List<Orders> orderList = orderRepository.findAll();
 
         LocalDateTime start = LocalDate.now().minusDays(1).atTime(14, 0);

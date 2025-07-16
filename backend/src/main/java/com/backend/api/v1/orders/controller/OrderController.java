@@ -20,6 +20,6 @@ public class OrderController {
     @GetMapping("/orders")
     public List<Orders> orders() {
         //배송되고 있는 주문목록만 보여주는 페이지
-        return ordersService.getOrdersInDelivery();
+        return ordersService.getDeliveredOrders();
     }
 }
