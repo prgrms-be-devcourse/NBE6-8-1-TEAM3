@@ -104,4 +104,23 @@ public class OrdersServiceTest {
                     assertThat(order.isOrderStatus()).isTrue();
                 });
     }
+
+    @Test
+    @DisplayName("getOrdersInDelivery 메소드")
+    void getOrdersInDelivery() {
+        List<Orders> orders = testDataFactory.createManyOrders(10);
+
+        LocalDateTime start = LocalDate.now().minusDays(1).atTime(14, 0);
+        LocalDateTime end = LocalDate.now().atTime(14, 0);
+
+        List<Orders> filteredOrders = ordersService.getOrdersInDelivery();
+
+        assertThat(filteredOrders)
+                .allSatisfy(order -> {
+                    LocalDateTime dt = order.getOrdersDate();
+                    assertThat(dt).isAfterOrEqualTo(start);
+                    assertThat(dt).isBefore(end);
+                    assertThat(order.isOrderStatus()).isTrue();
+                });
+    }
 }

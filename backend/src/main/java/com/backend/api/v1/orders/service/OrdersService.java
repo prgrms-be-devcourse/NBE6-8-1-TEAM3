@@ -46,4 +46,21 @@ public class OrdersService {
 
         return deliveredOrders;
     }
+
+    public List<Orders> getOrdersInDelivery() {
+        List<Orders> orderList = orderRepository.findAll();
+
+        LocalDateTime start = LocalDate.now().minusDays(1).atTime(14, 0);
+        LocalDateTime end = LocalDate.now().atTime(14, 0);
+
+        List<Orders> filteredOrders = orderList.stream()
+                .filter(Orders::isOrderStatus)
+                .filter(o -> {
+                    LocalDateTime dt = o.getOrdersDate();
+                    return (dt.isEqual(start) || dt.isAfter(start)) && dt.isBefore(end);
+                })
+                .collect(Collectors.toList());
+
+        return filteredOrders;
+    }
 }
