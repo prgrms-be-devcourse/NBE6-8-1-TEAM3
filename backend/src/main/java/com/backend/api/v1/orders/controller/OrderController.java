@@ -12,15 +12,15 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/orders")
 public class OrderController {
 
     private final OrdersService ordersService;
 
-
-    @GetMapping("/orders")
+    @GetMapping("/shipping")
     public List<Orders> orders() {
-        ordersService.deliverOrder();
+        // 현재 시간 무시하고 전날 오후 2시~금일 오후 2시 사이 미배송 객체들을 배송 시작
+        // ordersService.deliverOrder();
 
         //배송되고 있는 주문목록만 보여주는 페이지
         return ordersService.getDeliveredOrders();
