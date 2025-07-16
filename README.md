@@ -16,9 +16,10 @@ Feat: "로그인 함수 추가" -> 제목
 로그인 요청을 위한 함수 구현 -> 본문
 ```
 ### 제목 작성 두 가지 방식
-
+```
 1. Feat: "로그인 함수 추가"
 2. be-feat-1 : "작업내용"
+```
 
 ### Commit Type
 - Feat : 새로운 기능 추가
@@ -34,5 +35,5 @@ Feat: "로그인 함수 추가" -> 제목
 - Rename : 파일 및 폴더명 수정
 - Remove : 파일 삭제
 
-Commit Message Convention 자세한 설명은 아래 링크를 참고바랍니다. <br/>
+Commit Message Convention의 자세한 설명은 아래 링크를 참고바랍니다. <br/>
 https://projectlog.tistory.com/57
