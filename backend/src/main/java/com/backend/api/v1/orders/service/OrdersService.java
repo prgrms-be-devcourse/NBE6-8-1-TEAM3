@@ -4,9 +4,11 @@ import com.backend.api.v1.orders.entity.Orders;
 import com.backend.api.v1.orders.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,5 +32,18 @@ public class OrdersService {
                 .collect(Collectors.toList());
 
         return filteredOrders;
+    }
+
+    @Transactional
+    public List<Orders> deliverOrder() {
+        List<Orders> undeliveredOrders = getUndeliveredOrders();
+        List<Orders> deliveredOrders = new ArrayList<>();
+
+        for(Orders order : undeliveredOrders){
+            order.setOrderStatus(true);
+            deliveredOrders.add(order);
+        }
+
+        return deliveredOrders;
     }
 }

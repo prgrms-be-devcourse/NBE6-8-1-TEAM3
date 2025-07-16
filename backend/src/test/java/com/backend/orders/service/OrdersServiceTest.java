@@ -97,10 +97,7 @@ public class OrdersServiceTest {
         //deliverOrder 메소드가 객체의 false를 true로 변경해야 함
         List<Orders> orders = testDataFactory.createManyOrders(10);
 
-        LocalDateTime start = LocalDate.now().minusDays(1).atTime(14, 0);
-        LocalDateTime end = LocalDate.now().atTime(14, 0);
-
-        List<Orders> filteredOrders = ordersService.getUndeliveredOrders();
+        List<Orders> filteredOrders = ordersService.deliverOrder();
 
         assertThat(filteredOrders)
                 .allSatisfy(order -> {
