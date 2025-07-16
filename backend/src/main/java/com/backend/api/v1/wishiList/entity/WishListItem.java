@@ -22,4 +22,9 @@ public class WishListItem {
     private Products products;
 
     private int count;
+
+    public WishListItem(WishList wishList, int count) {
+        this.wishList = wishList;
+        this.count = count;
+    }
 }

@@ -1,7 +1,13 @@
 package com.backend.api.v1.orders.service;
 
+import com.backend.api.v1.orders.entity.OrderItem;
 import com.backend.api.v1.orders.entity.Orders;
+import com.backend.api.v1.orders.repository.OrderItemRepository;
 import com.backend.api.v1.orders.repository.OrderRepository;
+import com.backend.api.v1.products.entity.Products;
+import com.backend.api.v1.wishiList.entity.WishList;
+import com.backend.api.v1.wishiList.entity.WishListItem;
+import com.backend.api.v1.wishiList.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +23,7 @@ import java.util.stream.Collectors;
 public class OrdersService {
     //전날 오후 2시 ~ 금일 오후 2시 사이 미배송 객체 리턴
     private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
 
     public List<Orders> getUndeliveredOrders() {
         List<Orders> orderList = orderRepository.findAll();
@@ -61,5 +68,29 @@ public class OrdersService {
                     return (dt.isEqual(start) || dt.isAfter(start)) && dt.isBefore(end);
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public String createOrders(WishList wishList) {
+        String email = wishList.getEmail();
+        String address = wishList.getAddress();
+        LocalDateTime ordersDate = LocalDateTime.now();
+        int totalPrice = wishList.getTotalPrice();
+        boolean orderStatus = false;
+
+        Orders order = new Orders(email, ordersDate, totalPrice, orderStatus, address);
+
+        for (WishListItem item : wishList.getWishListItem()) {
+            Products products = item.getProducts();
+            int totalCount = item.getCount();
+
+            OrderItem orderItem = new OrderItem(order, products, totalCount);
+
+            order.addOrderItem(orderItem);
+        }
+
+        orderRepository.save(order);
+
+        return "주문 완료되었습니다.";
     }
 }

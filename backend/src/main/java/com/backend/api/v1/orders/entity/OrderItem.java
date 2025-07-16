@@ -4,6 +4,7 @@ import com.backend.api.v1.products.entity.Products;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +12,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity
 public class OrderItem {
     @Id

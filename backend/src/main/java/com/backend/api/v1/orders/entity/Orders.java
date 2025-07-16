@@ -27,14 +27,21 @@ public class Orders {
     private LocalDateTime ordersDate;
     private int totalPrice;
     private boolean orderStatus;
+    private String address;
 
     @OneToMany(mappedBy = "orders", cascade = {PERSIST, REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderItem> ordersItems = new ArrayList<>();
 
-    public Orders(String email, LocalDateTime ordersDate, int totalPrice, boolean orderStatus) {
+    public Orders(String email, LocalDateTime ordersDate, int totalPrice, boolean orderStatus, String address) {
         this.email = email;
         this.ordersDate = ordersDate;
         this.totalPrice = totalPrice;
         this.orderStatus = orderStatus;
+        this.address = address;
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        ordersItems.add(orderItem);
+        orderItem.setOrders(this);
     }
 }

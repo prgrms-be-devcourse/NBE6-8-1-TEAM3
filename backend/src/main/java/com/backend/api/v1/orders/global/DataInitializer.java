@@ -3,6 +3,11 @@ package com.backend.api.v1.orders.global;
 import com.backend.api.v1.orders.entity.Orders;
 import com.backend.api.v1.orders.repository.OrderRepository;
 import com.backend.api.v1.orders.service.OrdersService;
+import com.backend.api.v1.products.entity.Products;
+import com.backend.api.v1.wishiList.entity.WishList;
+import com.backend.api.v1.wishiList.entity.WishListItem;
+import com.backend.api.v1.wishiList.repository.WishListItemRepository;
+import com.backend.api.v1.wishiList.repository.WishListRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
@@ -18,24 +23,45 @@ import java.util.concurrent.ThreadLocalRandom;
 public class DataInitializer implements ApplicationRunner {
     private final OrdersService ordersService;
     private final OrderRepository orderRepository;
+    private final WishListRepository wishListRepository;
+    private final WishListItemRepository wishListItemRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         for (int i = 0; i < 10; i++) {
+//            //order 생성기
+//            String email = "test@example.com";
+//            LocalDateTime now = LocalDateTime.now();
+//
+//            int randomHour = ThreadLocalRandom.current().nextInt(0, 24);
+//            int randomMinute = ThreadLocalRandom.current().nextInt(0, 60);
+//            int randomSecond = ThreadLocalRandom.current().nextInt(0, 60);
+//
+//            LocalDateTime ordersDate = now.withHour(randomHour).withMinute(randomMinute).withSecond(randomSecond);
+//
+//            int totalPrice = 15000;
+//            boolean orderStatus = false;
+//            String address = "서울특별시 서초구 반포대로 45, 4층(서초동, 명정빌딩)";
+//
+//            Orders order = new Orders(email, ordersDate, totalPrice, orderStatus, address);
+//            orderRepository.save(order);
+
+            //wishList 생성기
             String email = "test@example.com";
-            LocalDateTime now = LocalDateTime.now();
+            String address = "서울특별시 서초구 반포대로 45, 4층(서초동, 명정빌딩)";
+            int totalCount = 1;
+            int totalPrice = 5000;
 
-            int randomHour = ThreadLocalRandom.current().nextInt(0, 24);
-            int randomMinute = ThreadLocalRandom.current().nextInt(0, 60);
-            int randomSecond = ThreadLocalRandom.current().nextInt(0, 60);
+            WishList wishList = new WishList(email, address, totalCount, totalPrice);
+            wishListRepository.save(wishList);
 
-            LocalDateTime ordersDate = now.withHour(randomHour).withMinute(randomMinute).withSecond(randomSecond);
+            //wishListItem 생성기
+            int itemTotalCount = 2;
 
-            int totalPrice = 15000;
-            boolean orderStatus = false;
-
-            Orders order = new Orders(email, ordersDate, totalPrice, orderStatus);
-            orderRepository.save(order);
+            for (int j = 0; j < 3; j++) {
+                WishListItem wishListItem = new WishListItem(wishList, itemTotalCount);
+                wishListItemRepository.save(wishListItem);
+            }
         }
     }
 }
