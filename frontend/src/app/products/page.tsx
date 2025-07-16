@@ -24,6 +24,7 @@ type CartItem = {
 
 type PickedProductInfoProps = {
   cartItems: CartItem[];
+  handleRemoveFromCart: (productId: number) => void;
 };
 
 type OrderFormProps = {
@@ -68,13 +69,27 @@ function ProductInfo({ productList, handleAddToCart }: ProductInfoProps) {
 {
   /* 선택된 상품 목록 */
 }
-function PickedProductInfo({ cartItems }: PickedProductInfoProps) {
+function PickedProductInfo({
+  cartItems,
+  handleRemoveFromCart,
+}: PickedProductInfoProps) {
   return (
     <div className="mb-4 space-y-2">
       {cartItems.length > 0 ? (
         cartItems.map((item, index) => (
-          <div key={index} className="border p-2 rounded bg-white">
-            {item.product.productName} x {item.quantity}
+          <div
+            key={index}
+            className="border p-2 rounded bg-white flex justify-between items-center"
+          >
+            <span>
+              {item.product.productName} x {item.quantity}
+            </span>
+            <button
+              onClick={() => handleRemoveFromCart(item.product.id)}
+              className="text-red-500 border border-red-500 px-2 py-1 rounded hover:bg-red-100"
+            >
+              -
+            </button>
           </div>
         ))
       ) : (
@@ -131,22 +146,6 @@ export default function Page() {
   const [productList, setProductList] = useState<Product[]>([]);
   const pricePerItem = 10000;
 
-  //🟡 상품 목록 json 형태로 가져오는 코드
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/v1/products`);
-        if (!res.ok) throw new Error("데이터 요청 실패");
-        const json = await res.json();
-        setProductList(json);
-      } catch (err) {
-        console.error("API 요청 실패:", err);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
   // 클릭시, carItem에 아이템을 추가한다.
   const handleAddToCart = (product: Product) => {
     setCartItems((prevItems) => {
@@ -173,6 +172,28 @@ export default function Page() {
     );
   };
 
+  const handleRemoveFromCart = (productId: number) => {
+    setCartItems((prevItems) =>
+      prevItems.filter((item) => item.product.id !== productId)
+    );
+  };
+
+  //🟡 상품 목록 json 형태로 가져오는 코드
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/v1/products`);
+        if (!res.ok) throw new Error("데이터 요청 실패");
+        const json = await res.json();
+        setProductList(json);
+      } catch (err) {
+        console.error("API 요청 실패:", err);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
     <div className="p-8 max-w-6xl mx-auto font-sans">
       <h1 className="text-4xl font-bold text-center mb-8">Grids & Circles</h1>
@@ -188,7 +209,10 @@ export default function Page() {
           <h2 className="text-2xl font-semibold mb-4">장바구니</h2>
 
           {/* 선택된 상품 목록 */}
-          <PickedProductInfo cartItems={cartItems} />
+          <PickedProductInfo
+            cartItems={cartItems}
+            handleRemoveFromCart={handleRemoveFromCart}
+          />
 
           {/* 주문 폼 */}
           <OrderForm totalPrice={calculateTotal()} />
