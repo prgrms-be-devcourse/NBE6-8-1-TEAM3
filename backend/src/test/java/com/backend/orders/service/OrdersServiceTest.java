@@ -90,4 +90,21 @@ public class OrdersServiceTest {
                     assertThat(order.isOrderStatus()).isFalse();
                 });
     }
+
+    @Test
+    @DisplayName("deliverOrder 메소드")
+    void deliverOrder() {
+        //deliverOrder 메소드가 객체의 false를 true로 변경해야 함
+        List<Orders> orders = testDataFactory.createManyOrders(10);
+
+        LocalDateTime start = LocalDate.now().minusDays(1).atTime(14, 0);
+        LocalDateTime end = LocalDate.now().atTime(14, 0);
+
+        List<Orders> filteredOrders = ordersService.getUndeliveredOrders();
+
+        assertThat(filteredOrders)
+                .allSatisfy(order -> {
+                    assertThat(order.isOrderStatus()).isTrue();
+                });
+    }
 }

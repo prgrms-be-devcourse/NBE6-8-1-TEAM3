@@ -30,8 +30,5 @@ public class OrdersService {
                 .collect(Collectors.toList());
 
         return filteredOrders;
-
-        //배송 현황 페이지를 하나 만들까?
-        //그러려면 전체를 보여줘야 함.
     }
 }
