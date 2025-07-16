@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 public class TestDataFactory {
@@ -34,5 +35,20 @@ public class TestDataFactory {
 
         OrderItem orderItem = new OrderItem(order, product, totalCount);
         return orderItemRepository.save(orderItem);
+    }
+
+    public List<Orders> createManyOrders(int count) {
+        orderRepository.deleteAll();
+
+        for (int i = 0; i < count; i++) {
+            String email = "test@example.com";
+            LocalDateTime ordersDate = LocalDateTime.now();
+            int totalPrice = 15000;
+            boolean orderStatus = false;
+
+            Orders order = new Orders(email, ordersDate, totalPrice, orderStatus);
+            orderRepository.save(order);
+        }
+        return orderRepository.findAll();
     }
 }

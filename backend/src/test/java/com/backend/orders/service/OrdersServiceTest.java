@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @SpringBootTest
 @Transactional
@@ -57,4 +58,13 @@ public class OrdersServiceTest {
         assertThat(findOrderItem.getProducts()).isEqualTo(orderItem.getProducts());
         assertThat(findOrderItem.getTotalCount()).isEqualTo(orderItem.getTotalCount());
     }
-}
+
+    @Test
+    @DisplayName("테스트용 다건 데이터 생성 - orders")
+    void createManyOrder() {
+        int count = 10;
+        List<Orders> orders = testDataFactory.createManyOrders(count);
+
+        assertThat(orders.size()).isEqualTo(count);
+        }
+    }
