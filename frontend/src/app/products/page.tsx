@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 
+const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 type Product = {
   id: number;
   productName: string;
@@ -43,7 +45,7 @@ function ProductInfo({ productList, handleAddToCart }: ProductInfoProps) {
             className="p-4 border rounded-lg shadow hover:shadow-md transition cursor-pointer hover:bg-gray-100 bg-white"
           >
             <img
-              src={`/${product.path}.jpg`} // 👈 정적 파일 폴더에 맞게 확장자 포함
+              src={`${NEXT_PUBLIC_API_BASE_URL}/${product.path}.jpg`} // 👈 정적 파일 폴더에 맞게 확장자 포함
               alt={product.productName}
               className="w-full h-40 object-cover rounded mb-2"
             />
@@ -133,7 +135,7 @@ export default function Page() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/v1/products");
+        const res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/v1/products`);
         if (!res.ok) throw new Error("데이터 요청 실패");
         const json = await res.json();
         setProductList(json);
