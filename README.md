@@ -2,9 +2,11 @@
 
 ## 프로젝트 시작 전에 읽어주세요!
 1. 작업 전, Issues에 자신의 작업을 등록해주세요. 백엔드 작업의 경우 -> [BE] 이슈이름
-2. 작업은 main 브런치가 아닌 작업용 브랜치를 따로 만들어서 진행해주세요.
-3. 작업 진행중 커밋을 진행시, 아래의 Commit Message Convention과 양식을 참고하여 진행해주세요.
+2. 작업은 main 브랜치가 아닌 작업용 브랜치를 따로 만들어서 진행해주세요.
+3. 작업 진행중 커밋을 진행시, 아래의 Commit Message Convention을 참고하여 진행해주세요.
 4. 작업에서 하나의 커밋 진행 후, `git pull origin main --rebase`를 통해 작업 브랜치의 최신화를 유지해주세요.
+5. 작업이 끝나면 해당 작업을 브랜치에 push 후 main branch와 Squash merge 해주세요.
+6. merge 후에는 브런치를 삭제해주시고, `git fetch --prune`을 통해 로컬에 남아있는 원격 레포지토리를 정리해주세요.
 
 ## Commit Message Convention
 ### 커밋 메시지 양식
@@ -32,5 +34,5 @@ Feat: "로그인 함수 추가" -> 제목
 - Rename : 파일 및 폴더명 수정
 - Remove : 파일 삭제
 
-자세한 설명은 아래 링크를 참고바랍니다. <br/>
+Commit Message Convention 자세한 설명은 아래 링크를 참고바랍니다. <br/>
 https://projectlog.tistory.com/57
