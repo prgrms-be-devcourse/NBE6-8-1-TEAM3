@@ -1,4 +1,4 @@
-package com.backend.orders.service;
+package com.backend.domain.orders.service;
 
 import com.backend.api.v1.orders.entity.OrderItem;
 import com.backend.api.v1.orders.entity.Orders;
@@ -8,8 +8,7 @@ import com.backend.api.v1.orders.service.OrdersService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.BDDAssertions.within;
 
-import com.backend.api.v1.products.entity.Products;
-import com.backend.orders.TestDataFactory;
+import com.backend.domain.orders.TestDataFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @SpringBootTest
 @Transactional

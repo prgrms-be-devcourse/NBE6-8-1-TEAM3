@@ -1,4 +1,4 @@
-package com.backend.orders;
+package com.backend.domain.orders;
 
 import com.backend.api.v1.orders.entity.OrderItem;
 import com.backend.api.v1.orders.entity.Orders;
@@ -24,8 +24,9 @@ public class TestDataFactory {
         LocalDateTime ordersDate = LocalDateTime.now();
         int totalPrice = 15000;
         boolean orderStatus = false;
+        String address = "샘플주소";
 
-        Orders order = new Orders(email, ordersDate, totalPrice, orderStatus);
+        Orders order = new Orders(email, ordersDate, totalPrice, orderStatus, address);
         return orderRepository.save(order);
     }
 
@@ -53,8 +54,9 @@ public class TestDataFactory {
 
             int totalPrice = 15000;
             boolean orderStatus = false;
+            String address = "샘플주소";
 
-            Orders order = new Orders(email, ordersDate, totalPrice, orderStatus);
+            Orders order = new Orders(email, ordersDate, totalPrice, orderStatus, address);
             orderRepository.save(order);
         }
         return orderRepository.findAll();
