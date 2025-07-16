@@ -22,6 +22,7 @@ public class OrdersService {
         LocalDateTime end = LocalDate.now().atTime(14, 0);
 
         List<Orders> filteredOrders = orderList.stream()
+                .filter(o -> !o.isOrderStatus())
                 .filter(o -> {
                     LocalDateTime dt = o.getOrdersDate();
                     return (dt.isEqual(start) || dt.isAfter(start)) && dt.isBefore(end);

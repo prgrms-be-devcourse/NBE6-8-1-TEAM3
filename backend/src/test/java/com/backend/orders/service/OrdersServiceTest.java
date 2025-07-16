@@ -73,7 +73,7 @@ public class OrdersServiceTest {
         }
 
     @Test
-    @DisplayName("orders 생성시간 비교 테스트")
+    @DisplayName("orders 생성시간, 배송 미완료 비교 테스트")
     void compareOrdersCreateTime() {
         List<Orders> orders = testDataFactory.createManyOrders(10);
 
@@ -87,6 +87,7 @@ public class OrdersServiceTest {
                     LocalDateTime dt = order.getOrdersDate();
                     assertThat(dt).isAfterOrEqualTo(start);
                     assertThat(dt).isBefore(end);
+                    assertThat(order.isOrderStatus()).isFalse();
                 });
     }
 }
