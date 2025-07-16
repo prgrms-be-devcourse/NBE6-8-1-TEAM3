@@ -31,4 +31,11 @@ public class Products {
     private String productDescription;
     private int productPrice;
     private String path;
+
+    public Products(String productName, String productDescription, int productPrice, String path) {
+        this.productName = productName;
+        this.productDescription = productDescription;
+        this.productPrice = productPrice;
+        this.path = path;
+    }
 }
