@@ -62,7 +62,7 @@ function OrderForm({totalPrice} : OrderFormProps) {
                         <div>
                             <label className="block mb-1 font-medium">이메일</label>
                             <input
-                                type="text"
+                                type="email"
                                 className="w-full border-2 border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                             />
                         </div>
