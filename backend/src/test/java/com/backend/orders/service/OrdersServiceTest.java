@@ -80,7 +80,7 @@ public class OrdersServiceTest {
         LocalDateTime start = LocalDate.now().minusDays(1).atTime(14, 0);
         LocalDateTime end = LocalDate.now().atTime(14, 0);
 
-        List<Orders> filteredOrders = ordersService.delivery();
+        List<Orders> filteredOrders = ordersService.getUndeliveredOrders();
 
         assertThat(filteredOrders)
                 .allSatisfy(order -> {

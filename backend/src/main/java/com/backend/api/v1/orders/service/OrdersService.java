@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class OrdersService {
     private final OrderRepository orderRepository;
 
-    public List<Orders> delivery() {
+    public List<Orders> getUndeliveredOrders() {
         List<Orders> orderList = orderRepository.findAll();
 
         LocalDateTime start = LocalDate.now().minusDays(1).atTime(14, 0);

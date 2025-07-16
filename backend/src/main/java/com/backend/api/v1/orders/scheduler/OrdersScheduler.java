@@ -13,6 +13,6 @@ public class OrdersScheduler {
 
     @Scheduled(cron = "0 0 14 * * *")
     public void runSchedule() {
-        ordersService.delivery();
+        ordersService.getUndeliveredOrders();
     }
 }
