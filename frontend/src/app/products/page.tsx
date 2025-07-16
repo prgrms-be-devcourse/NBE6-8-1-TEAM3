@@ -144,7 +144,6 @@ function OrderForm({ totalPrice }: OrderFormProps) {
 export default function Page() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [productList, setProductList] = useState<Product[]>([]);
-  const pricePerItem = 10000;
 
   // 클릭시, carItem에 아이템을 추가한다.
   const handleAddToCart = (product: Product) => {
@@ -167,14 +166,21 @@ export default function Page() {
 
   const calculateTotal = () => {
     return cartItems.reduce(
-      (total, item) => total + item.quantity * pricePerItem,
+      (total, item) => total + item.quantity * item.product.productPrice,
       0
     );
   };
 
   const handleRemoveFromCart = (productId: number) => {
-    setCartItems((prevItems) =>
-      prevItems.filter((item) => item.product.id !== productId)
+    setCartItems(
+      (prevItems) =>
+        prevItems
+          .map((item) =>
+            item.product.id === productId
+              ? { ...item, quantity: item.quantity - 1 }
+              : item
+          )
+          .filter((item) => item.quantity > 0) // 수량이 0인 항목은 제거
     );
   };
 
