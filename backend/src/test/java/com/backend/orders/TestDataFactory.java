@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Component
 public class TestDataFactory {
@@ -42,7 +43,14 @@ public class TestDataFactory {
 
         for (int i = 0; i < count; i++) {
             String email = "test@example.com";
-            LocalDateTime ordersDate = LocalDateTime.now();
+            LocalDateTime now = LocalDateTime.now();
+
+            int randomHour = ThreadLocalRandom.current().nextInt(0, 24);
+            int randomMinute = ThreadLocalRandom.current().nextInt(0, 60);
+            int randomSecond = ThreadLocalRandom.current().nextInt(0, 60);
+
+            LocalDateTime ordersDate = now.withHour(randomHour).withMinute(randomMinute).withSecond(randomSecond);
+
             int totalPrice = 15000;
             boolean orderStatus = false;
 

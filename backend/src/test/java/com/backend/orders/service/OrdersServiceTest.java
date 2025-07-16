@@ -16,9 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 @Transactional
@@ -67,4 +69,27 @@ public class OrdersServiceTest {
 
         assertThat(orders.size()).isEqualTo(count);
         }
+
+    @Test
+    @DisplayName("orders 생성시간 비교 테스트")
+    void compareOrdersCreateTime() {
+        List<Orders> orders = testDataFactory.createManyOrders(10);
+
+        LocalDateTime start = LocalDate.now().minusDays(1).atTime(14, 0);
+        LocalDateTime end = LocalDate.now().atTime(14, 0);
+
+        List<Orders> filteredOrders = orders.stream()
+                .filter(o -> {
+                    LocalDateTime dt = o.getOrdersDate();
+                    return (dt.isEqual(start) || dt.isAfter(start)) && dt.isBefore(end);
+                })
+                .collect(Collectors.toList());
+
+        assertThat(filteredOrders)
+                .allSatisfy(order -> {
+                    LocalDateTime dt = order.getOrdersDate();
+                    assertThat(dt).isAfterOrEqualTo(start);
+                    assertThat(dt).isBefore(end);
+                });
+    }
     }
