@@ -2,13 +2,21 @@
 
 import React, { useState, useEffect } from "react";
 
+type Product = {
+  id: number;
+  productName: string;
+  productDescription: string;
+  productPrice: number;
+  path: string;
+};
+
 type ProductInfoProps = {
-  productList: string[];
-  handleAddToCart: (product: string) => void;
+  productList: Product[];
+  handleAddToCart: (product: Product) => void;
 };
 
 type CartItem = {
-  name: String;
+  product: Product;
   quantity: number;
 };
 
@@ -28,13 +36,26 @@ function ProductInfo({ productList, handleAddToCart }: ProductInfoProps) {
     <section className="md:w-2/3 w-full">
       <h2 className="text-2xl font-semibold mb-4">상품목록</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {productList.map((product, index) => (
+        {productList.map((product) => (
           <div
-            key={index}
+            key={product.id}
             onClick={() => handleAddToCart(product)}
-            className="p-4 border rounded-lg shadow hover:shadow-md transition cursor-pointer hover:bg-gray-100"
+            className="p-4 border rounded-lg shadow hover:shadow-md transition cursor-pointer hover:bg-gray-100 bg-white"
           >
-            {product}
+            <img
+              src={`/${product.path}.jpg`} // 👈 정적 파일 폴더에 맞게 확장자 포함
+              alt={product.productName}
+              className="w-full h-40 object-cover rounded mb-2"
+            />
+            <h3 className="text-lg font-semibold">{product.productName}</h3>
+
+            <p className="text-sm text-gray-600 mb-1">
+              {product.productDescription}
+            </p>
+
+            <p className="text-blue-600 font-semibold">
+              ₩{product.productPrice.toLocaleString()}
+            </p>
           </div>
         ))}
       </div>
@@ -51,7 +72,7 @@ function PickedProductInfo({ cartItems }: PickedProductInfoProps) {
       {cartItems.length > 0 ? (
         cartItems.map((item, index) => (
           <div key={index} className="border p-2 rounded bg-white">
-            {item.name} x {item.quantity}
+            {item.product.productName} x {item.quantity}
           </div>
         ))
       ) : (
@@ -105,22 +126,40 @@ function OrderForm({ totalPrice }: OrderFormProps) {
 
 export default function Page() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const productList = ["상품1", "상품2", "상품3"];
+  const [productList, setProductList] = useState<Product[]>([]);
   const pricePerItem = 10000;
 
-  // 클릭시, 어떻게 되는지
-  const handleAddToCart = (product: string) => {
+  //🟡 상품 목록 json 형태로 가져오는 코드
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch("http://localhost:8080/api/v1/products");
+        if (!res.ok) throw new Error("데이터 요청 실패");
+        const json = await res.json();
+        setProductList(json);
+      } catch (err) {
+        console.error("API 요청 실패:", err);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // 클릭시, carItem에 아이템을 추가한다.
+  const handleAddToCart = (product: Product) => {
     setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.name === product);
+      const existingItem = prevItems.find(
+        (item) => item.product.id === product.id
+      );
 
       if (existingItem) {
         return prevItems.map((item) =>
-          item.name === product
+          item.product.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       } else {
-        return [...prevItems, { name: product, quantity: 1 }];
+        return [...prevItems, { product, quantity: 1 }];
       }
     });
   };
@@ -131,22 +170,6 @@ export default function Page() {
       0
     );
   };
-
-  //🟡 상품 목록 json 형태로 가져오는 코드
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await fetch("http://localhost:8080/api/v1/products");
-        if (!res.ok) throw new Error("데이터 요청 실패");
-        const json = await res.json();
-        console.log(json);
-      } catch (err) {
-        console.error("API 요청 실패:", err);
-      }
-    };
-
-    fetchProducts();
-  }, []);
 
   return (
     <div className="p-8 max-w-6xl mx-auto font-sans">
