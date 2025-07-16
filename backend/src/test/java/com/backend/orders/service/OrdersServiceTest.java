@@ -32,6 +32,8 @@ public class OrdersServiceTest {
     private OrderItemRepository orderItemRepository;
     @Autowired
     private TestDataFactory testDataFactory;
+    @Autowired
+    private OrdersService ordersService;
 
 
     @Test
@@ -78,12 +80,7 @@ public class OrdersServiceTest {
         LocalDateTime start = LocalDate.now().minusDays(1).atTime(14, 0);
         LocalDateTime end = LocalDate.now().atTime(14, 0);
 
-        List<Orders> filteredOrders = orders.stream()
-                .filter(o -> {
-                    LocalDateTime dt = o.getOrdersDate();
-                    return (dt.isEqual(start) || dt.isAfter(start)) && dt.isBefore(end);
-                })
-                .collect(Collectors.toList());
+        List<Orders> filteredOrders = ordersService.delivery();
 
         assertThat(filteredOrders)
                 .allSatisfy(order -> {
@@ -92,4 +89,4 @@ public class OrdersServiceTest {
                     assertThat(dt).isBefore(end);
                 });
     }
-    }
+}
