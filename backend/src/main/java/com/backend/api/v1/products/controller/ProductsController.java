@@ -4,6 +4,7 @@ import com.backend.api.v1.products.dto.ProductDto;
 import com.backend.api.v1.products.entity.Products;
 import com.backend.api.v1.products.service.ProductsService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/products")
 @RequiredArgsConstructor
+@Tag(name = "ProductsController", description = "상품 목록 컨트롤러")
 public class ProductsController {
     private final ProductsService productsService;
 
