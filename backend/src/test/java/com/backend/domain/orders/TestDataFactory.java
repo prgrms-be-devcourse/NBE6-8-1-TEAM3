@@ -25,8 +25,9 @@ public class TestDataFactory {
         int totalPrice = 15000;
         boolean orderStatus = false;
         String address = "샘플주소";
+        String zipCode = "12345";
 
-        Orders order = new Orders(email, ordersDate, totalPrice, orderStatus, address);
+        Orders order = new Orders(email, ordersDate, totalPrice, orderStatus, address, zipCode);
         return orderRepository.save(order);
     }
 
@@ -55,8 +56,9 @@ public class TestDataFactory {
             int totalPrice = 15000;
             boolean orderStatus = false;
             String address = "샘플주소";
+            String zipCode = "12345";
 
-            Orders order = new Orders(email, ordersDate, totalPrice, orderStatus, address);
+            Orders order = new Orders(email, ordersDate, totalPrice, orderStatus, address, zipCode);
             orderRepository.save(order);
         }
         return orderRepository.findAll();
