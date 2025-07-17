@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -18,6 +19,7 @@ type CartItem = {
 };
 
 export function useOrder() {
+  const router = useRouter();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [productList, setProductList] = useState<Product[]>([]);
   const [email, setEmail] = useState("");
@@ -93,6 +95,8 @@ export function useOrder() {
       const responseJson = await res.json();
       console.log("서버 응답:", responseJson);
       alert("주문이 완료되었습니다!");
+
+      router.push(`/orders/${responseJson}`);
     } catch (error) {
       console.error("주문 실패:", error);
       alert("주문 중 오류가 발생했습니다.");
