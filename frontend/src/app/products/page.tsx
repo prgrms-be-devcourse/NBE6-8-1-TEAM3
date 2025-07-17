@@ -29,6 +29,13 @@ type PickedProductInfoProps = {
 
 type OrderFormProps = {
   totalPrice: number;
+  email: string;
+  address: string;
+  zipCode: string;
+  setEmail: (value: string) => void;
+  setAddress: (value: string) => void;
+  setZipCode: (value: string) => void;
+  handleOrderSubmit: () => void;
 };
 
 {
@@ -102,13 +109,24 @@ function PickedProductInfo({
 {
   /* 주문 폼 */
 }
-function OrderForm({ totalPrice }: OrderFormProps) {
+function OrderForm({
+  totalPrice,
+  email,
+  address,
+  zipCode,
+  setEmail,
+  setAddress,
+  setZipCode,
+  handleOrderSubmit,
+}: OrderFormProps) {
   return (
     <div className="space-y-4">
       <div>
         <label className="block mb-1 font-medium">이메일</label>
         <input
           type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="w-full border-2 border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
       </div>
@@ -117,6 +135,8 @@ function OrderForm({ totalPrice }: OrderFormProps) {
         <label className="block mb-1 font-medium">주소</label>
         <input
           type="text"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
           className="w-full border-2 border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
       </div>
@@ -125,6 +145,8 @@ function OrderForm({ totalPrice }: OrderFormProps) {
         <label className="block mb-1 font-medium">우편주소</label>
         <input
           type="text"
+          value={zipCode}
+          onChange={(e) => setZipCode(e.target.value)}
           className="w-full border-2 border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
       </div>
@@ -134,7 +156,10 @@ function OrderForm({ totalPrice }: OrderFormProps) {
         <span className="text-blue-600">₩{totalPrice.toLocaleString()}</span>
       </div>
 
-      <button className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
+      <button
+        onClick={handleOrderSubmit}
+        className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+      >
         주문하기
       </button>
     </div>
@@ -144,6 +169,9 @@ function OrderForm({ totalPrice }: OrderFormProps) {
 export default function Page() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [productList, setProductList] = useState<Product[]>([]);
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [zipCode, setZipCode] = useState("");
 
   // 클릭시, carItem에 아이템을 추가한다.
   const handleAddToCart = (product: Product) => {
@@ -164,13 +192,7 @@ export default function Page() {
     });
   };
 
-  const calculateTotal = () => {
-    return cartItems.reduce(
-      (total, item) => total + item.quantity * item.product.productPrice,
-      0
-    );
-  };
-
+  // 클릭시, carItem에 아이템을 버린다.
   const handleRemoveFromCart = (productId: number) => {
     setCartItems(
       (prevItems) =>
@@ -181,6 +203,55 @@ export default function Page() {
               : item
           )
           .filter((item) => item.quantity > 0) // 수량이 0인 항목은 제거
+    );
+  };
+
+  // 클릭시, 주문 정보를 서버로 전송
+  const handleOrderSubmit = async () => {
+    const totalQuantity = cartItems.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
+    const totalPrice = calculateTotal();
+
+    const orderData = {
+      email,
+      address,
+      zipCode,
+      totalQuantity,
+      totalPrice,
+      items: cartItems.map((item) => ({
+        name: item.product.productName,
+        quantity: item.quantity,
+      })),
+    };
+
+    try {
+      const res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/v1/dataTest`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (!res.ok) {
+        throw new Error("서버 응답 실패");
+      }
+
+      const responseJson = await res.json();
+      console.log("서버 응답:", responseJson);
+      alert("주문이 완료되었습니다!");
+    } catch (error) {
+      console.error("주문 실패:", error);
+      alert("주문 중 오류가 발생했습니다.");
+    }
+  };
+
+  const calculateTotal = () => {
+    return cartItems.reduce(
+      (total, item) => total + item.quantity * item.product.productPrice,
+      0
     );
   };
 
@@ -221,7 +292,16 @@ export default function Page() {
           />
 
           {/* 주문 폼 */}
-          <OrderForm totalPrice={calculateTotal()} />
+          <OrderForm
+            totalPrice={calculateTotal()}
+            email={email}
+            address={address}
+            zipCode={zipCode}
+            setEmail={setEmail}
+            setAddress={setAddress}
+            setZipCode={setZipCode}
+            handleOrderSubmit={handleOrderSubmit}
+          />
         </section>
       </div>
     </div>
