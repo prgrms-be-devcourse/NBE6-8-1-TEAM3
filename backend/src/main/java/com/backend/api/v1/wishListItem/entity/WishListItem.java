@@ -1,6 +1,7 @@
-package com.backend.api.v1.wishiList.entity;
+package com.backend.api.v1.wishListItem.entity;
 
 import com.backend.api.v1.products.entity.Products;
+import com.backend.api.v1.wishiList.entity.WishList;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,16 +16,19 @@ public class WishListItem {
     @GeneratedValue(strategy = IDENTITY)
     private int wishListItemId;
 
+    //위시리스트id 연결
     @ManyToOne
     private WishList wishList;
 
+    //상품id 연결
     @ManyToOne(fetch = FetchType.LAZY)
     private Products products;
 
     private int count;
 
-    public WishListItem(WishList wishList, int count) {
+    public WishListItem(WishList wishList, Products products, int count) {
         this.wishList = wishList;
+        this.products = products;
         this.count = count;
     }
 }

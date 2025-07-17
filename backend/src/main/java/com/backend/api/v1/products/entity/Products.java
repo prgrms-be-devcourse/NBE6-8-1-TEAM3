@@ -1,7 +1,7 @@
 package com.backend.api.v1.products.entity;
 
 import com.backend.api.v1.orders.entity.OrderItem;
-import com.backend.api.v1.wishiList.entity.WishListItem;
+import com.backend.api.v1.wishListItem.entity.WishListItem;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
