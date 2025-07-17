@@ -72,7 +72,7 @@ export function useOrder() {
       totalQuantity,
       totalPrice,
       items: cartItems.map((item) => ({
-        name: item.product.productName,
+        id: item.product.id,
         quantity: item.quantity,
       })),
     };
