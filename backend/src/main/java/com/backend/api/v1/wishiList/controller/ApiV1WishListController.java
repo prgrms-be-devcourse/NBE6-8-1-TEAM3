@@ -3,7 +3,7 @@ package com.backend.api.v1.wishiList.controller;
 
 import com.backend.api.v1.products.entity.Products;
 import com.backend.api.v1.products.service.ProductsService;
-import com.backend.api.v1.wishListItem.dto.WishListItemDto;
+import com.backend.api.v1.wishiList.dto.WishListItemDto;
 import com.backend.api.v1.wishiList.entity.WishList;
 import com.backend.api.v1.wishiList.service.WishListService;
 import io.swagger.v3.oas.annotations.Operation;
