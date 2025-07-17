@@ -1,4 +1,4 @@
-package com.backend.frontDataTest.DTO;
+package com.backend.dataTest.dto;
 
 import lombok.Data;
 
