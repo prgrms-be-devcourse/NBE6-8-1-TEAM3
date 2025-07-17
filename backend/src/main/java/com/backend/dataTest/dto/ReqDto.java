@@ -9,7 +9,7 @@ public class ReqDto {
     private String email;
     private String address;
     private String zipCode;
-    private int totalCount;
+    private int totalQuantity;
     private int totalPrice;
     private List<ItemDto> items;
 }

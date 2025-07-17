@@ -14,11 +14,11 @@ public class TestController {
         log.info("email -> " + reqDto.getEmail());
         log.info("address -> " + reqDto.getAddress());
         log.info("zipCode -> " + reqDto.getZipCode());
-        log.info("totalQuantity -> " + reqDto.getEmail());
-        log.info("totalPrice -> " + reqDto.getEmail());
+        log.info("totalQuantity -> " + reqDto.getTotalQuantity());
+        log.info("totalPrice -> " + reqDto.getTotalPrice());
 
         for(ItemDto item : reqDto.getItems()) {
-            log.info("itemName -> " + item.getName());
+            log.info("itemName -> " + item.getId());
             log.info("itemQuantity -> " + item.getQuantity());
         }
     }
