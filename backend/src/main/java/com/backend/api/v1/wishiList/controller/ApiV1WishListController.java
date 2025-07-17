@@ -45,7 +45,7 @@ public class ApiV1WishListController {
     }
     public record WishListItemAddReqDto(
             @NotBlank
-            int productId, //
+            int id, //
             // 실제 Products 엔티티와 ManyToOne 관계를 끊고 ID만 저장하기 위함.
             @Min(value = 1)
             int quantity
@@ -76,7 +76,7 @@ public class ApiV1WishListController {
 
         //위시 리스트 처리 후 아이템 생성(product 기능 임시 구현)
         for(WishListItemAddReqDto itemDto : reqBody.items) {
-            Products product = productService.findById(itemDto.productId).get();
+            Products product = productService.findById(itemDto.id).get();
             wishListService.addItem(wishlist, product, itemDto.quantity);
         }
         //추가 후 위시리스트아이디만 리턴
@@ -110,7 +110,7 @@ public class ApiV1WishListController {
         wishListService.deleteAllItems(wishlist);
         // 2. 새 아이템들 추가
         for (WishListItemAddReqDto itemDto : reqBody.items()) {
-            Products product = productService.findById(itemDto.productId()).orElseThrow(() -> new EntityNotFoundException("상품을 찾을 수 없습니다."));
+            Products product = productService.findById(itemDto.id()).orElseThrow(() -> new EntityNotFoundException("상품을 찾을 수 없습니다."));
             wishListService.addItem(wishlist, product, itemDto.quantity());
         }
         return wishlist.getWishId();
