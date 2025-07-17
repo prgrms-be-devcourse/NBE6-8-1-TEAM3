@@ -72,13 +72,13 @@ export function useOrder() {
       totalQuantity,
       totalPrice,
       items: cartItems.map((item) => ({
-        name: item.product.productName,
+        id: item.product.id,
         quantity: item.quantity,
       })),
     };
 
     try {
-      const res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/v1/dataTest`, {
+      const res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/dataTest`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
