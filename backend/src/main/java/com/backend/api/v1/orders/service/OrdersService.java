@@ -77,8 +77,9 @@ public class OrdersService {
         LocalDateTime ordersDate = LocalDateTime.now();
         int totalPrice = wishList.getTotalPrice();
         boolean orderStatus = false;
+        String zipCode = wishList.getZipCode();
 
-        Orders order = new Orders(email, ordersDate, totalPrice, orderStatus, address);
+        Orders order = new Orders(email, ordersDate, totalPrice, orderStatus, address, zipCode);
 
         for (WishListItem item : wishList.getWishListItem()) {
             Products products = item.getProducts();

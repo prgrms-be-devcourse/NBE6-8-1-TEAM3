@@ -48,11 +48,12 @@ public class DataInitializer implements ApplicationRunner {
 
             //wishList 생성기
             String email = "test@example.com";
-            String address = "서울특별시 서초구 반포대로 45, 4층(서초동, 명정빌딩)";
+            String address = "서울특별시 서초구 반포대로 45";
             int totalCount = 1;
             int totalPrice = 5000;
+            String zipCode = "4층";
 
-            WishList wishList = new WishList(email, address, totalCount, totalPrice);
+            WishList wishList = new WishList(email, address, totalCount, totalPrice, zipCode);
             wishListRepository.save(wishList);
 
             //wishListItem 생성기

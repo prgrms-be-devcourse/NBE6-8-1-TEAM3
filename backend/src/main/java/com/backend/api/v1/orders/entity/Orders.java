@@ -28,16 +28,18 @@ public class Orders {
     private int totalPrice;
     private boolean orderStatus;
     private String address;
+    private String zipCode;
 
     @OneToMany(mappedBy = "orders", cascade = {PERSIST, REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderItem> ordersItems = new ArrayList<>();
 
-    public Orders(String email, LocalDateTime ordersDate, int totalPrice, boolean orderStatus, String address) {
+    public Orders(String email, LocalDateTime ordersDate, int totalPrice, boolean orderStatus, String address, String zipCode) {
         this.email = email;
         this.ordersDate = ordersDate;
         this.totalPrice = totalPrice;
         this.orderStatus = orderStatus;
         this.address = address;
+        this.zipCode = zipCode;
     }
 
     public void addOrderItem(OrderItem orderItem) {

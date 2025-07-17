@@ -28,11 +28,13 @@ public class WishList {
     private String address;
     private int totalCount;
     private int totalPrice;
+    private String zipCode;
 
-    public WishList(String email, String address, int totalCount, int totalPrice) {
+    public WishList(String email, String address, int totalCount, int totalPrice,  String zipCode) {
         this.email = email;
         this.address = address;
         this.totalCount = totalCount;
         this.totalPrice = totalPrice;
+        this.zipCode = zipCode;
     }
 }
