@@ -29,8 +29,10 @@ public class OrdersServiceTest {
         LocalDateTime ordersDate = LocalDateTime.now();
         int totalPrice = 15000;
         boolean orderStatus = false;
+        String address = "서울시 서초동";
+        String zipCode = "12345";
 
-        Orders order = new Orders(email, ordersDate, totalPrice, orderStatus);
+        Orders order = new Orders(email, ordersDate, totalPrice, orderStatus, address, zipCode);
         orderRepository.save(order);
 
         Orders findOrder = orderRepository.findById(order.getOrdersId())
