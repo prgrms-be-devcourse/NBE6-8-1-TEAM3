@@ -1,12 +1,10 @@
-package com.backend.frontDataTest.DTO;
+package com.backend.dataTest.dto;
 
 import lombok.Data;
-import lombok.ToString;
 
 import java.util.List;
 
 @Data
-@ToString
 public class ReqDto {
     private String email;
     private String address;

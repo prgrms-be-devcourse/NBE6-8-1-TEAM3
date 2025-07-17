@@ -1,11 +1,9 @@
-package com.backend.frontDataTest.controller;
+package com.backend.dataTest.controller;
 
-import com.backend.frontDataTest.DTO.ItemDto;
-import com.backend.frontDataTest.DTO.ReqDto;
+import com.backend.dataTest.dto.ItemDto;
+import com.backend.dataTest.dto.ReqDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/dataTest")
