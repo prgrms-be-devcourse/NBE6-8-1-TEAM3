@@ -6,7 +6,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/dataTest")
+@RequestMapping("/api/dataTest")
 @Log4j2
 public class TestController {
     @PostMapping
