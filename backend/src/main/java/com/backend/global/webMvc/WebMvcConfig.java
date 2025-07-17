@@ -1,4 +1,4 @@
-package com.backend.api.v1.products.init;
+package com.backend.global.webMvc;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
