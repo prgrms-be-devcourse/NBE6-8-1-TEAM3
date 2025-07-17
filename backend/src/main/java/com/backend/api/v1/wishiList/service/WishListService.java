@@ -2,7 +2,7 @@ package com.backend.api.v1.wishiList.service;
 
 
 import com.backend.api.v1.products.entity.Products;
-import com.backend.api.v1.wishListItem.entity.WishListItem;
+import com.backend.api.v1.wishiList.entity.WishListItem;
 import com.backend.api.v1.wishiList.entity.WishList;
 import com.backend.api.v1.wishiList.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,35 +1,33 @@
-package com.backend.api.v1.orders.entity;
+package com.backend.api.v1.wishiList.entity;
 
 import com.backend.api.v1.products.entity.Products;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @NoArgsConstructor
 @Getter
-@Setter
 @Entity
-public class OrderItem {
+public class WishListItem {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private int orderItemId;
+    private int wishListItemId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Orders orders;
+    //위시리스트id 연결
+    @ManyToOne
+    private WishList wishList;
 
+    //상품id 연결
     @ManyToOne(fetch = FetchType.LAZY)
     private Products products;
 
-    private int totalCount;
+    private int count;
 
-    public OrderItem(Orders orders, Products products, int totalCount) {
-        this.orders = orders;
+    public WishListItem(WishList wishList, Products products, int count) {
+        this.wishList = wishList;
         this.products = products;
-        this.totalCount = totalCount;
+        this.count = count;
     }
 }

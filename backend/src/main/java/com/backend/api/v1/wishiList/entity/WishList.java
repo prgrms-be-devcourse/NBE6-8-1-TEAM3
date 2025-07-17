@@ -1,6 +1,5 @@
 package com.backend.api.v1.wishiList.entity;
 
-import com.backend.api.v1.wishListItem.entity.WishListItem;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
