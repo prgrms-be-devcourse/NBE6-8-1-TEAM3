@@ -4,6 +4,7 @@ package com.backend.api.v1.wishiList.controller;
 import com.backend.api.v1.products.entity.Products;
 import com.backend.api.v1.products.service.ProductsService;
 import com.backend.api.v1.wishiList.dto.WishListAddReqDto;
+import com.backend.api.v1.wishiList.dto.WishListDto;
 import com.backend.api.v1.wishiList.dto.WishListItemAddReqDto;
 import com.backend.api.v1.wishiList.dto.WishListItemDto;
 import com.backend.api.v1.wishiList.entity.WishList;
@@ -88,19 +89,15 @@ public class ApiV1WishListController {
     }
 
     @GetMapping
-    @Operation(summary = "위시리스트의 아이템 조회")
-    public List<WishListItemDto> getWishListItems(
+    @Operation(summary = "위시리스트 조회")
+    public WishListDto getWishListItems(
             @RequestParam(name = "wishListId") int wishId
     ){  //위시리스트 조회
         WishList wishlist = wishListService.findById(wishId)
                 .orElseThrow(() -> new EntityNotFoundException("위시리스트를 찾을 수 없습니다."));
 
-        //위시리스트 아이템 리스트 반환
-        return wishlist
-                .getWishListItem()
-                .stream()
-                .map(WishListItemDto::new)
-                .toList();
+        //WishListDto로 변환하여 반환
+        return new WishListDto(wishlist);
     }
 
 }

@@ -13,14 +13,14 @@ public record WishListDto(
         int totalPrice,
         List<WishListItemDto> wishListItems
 ) {
-    public WishListDto(WishList wishlist){
+    public WishListDto(WishList wishlist) {
         this(
                 wishlist.getEmail(),
                 wishlist.getAddress(),
                 wishlist.getZipCode(),
                 wishlist.getTotalCount(),
-                wishlist.getTotalPrice()
-                , wishlist.getWishListItem().stream()
+                wishlist.getTotalPrice(),
+                wishlist.getWishListItem().stream()
                         .map(WishListItemDto::new)
                         .toList()
         );
