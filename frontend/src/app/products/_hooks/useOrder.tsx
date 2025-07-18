@@ -96,7 +96,7 @@ export function useOrder() {
       console.log("서버 응답:", responseJson);
       alert("주문이 완료되었습니다!");
 
-      router.push(`/orders/${responseJson}`);
+      router.push(`/orders?wishListId=${responseJson}`);
     } catch (error) {
       console.error("주문 실패:", error);
       alert("주문 중 오류가 발생했습니다.");
