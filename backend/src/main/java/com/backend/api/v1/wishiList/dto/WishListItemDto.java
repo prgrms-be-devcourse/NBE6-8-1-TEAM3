@@ -5,7 +5,7 @@ import com.backend.api.v1.products.entity.Products;
 import com.backend.api.v1.wishiList.entity.WishListItem;
 
 public record WishListItemDto(
-        ProductDto productDto,
+        ProductDto product,
         int quantity
 ) {
 
