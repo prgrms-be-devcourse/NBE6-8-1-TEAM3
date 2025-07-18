@@ -8,6 +8,7 @@ import com.backend.api.v1.wishiList.entity.WishListItem;
 import com.backend.api.v1.wishiList.entity.WishList;
 import com.backend.api.v1.wishiList.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class WishListService {
     private final WishListRepository wishListRepository;
 
+    @EntityGraph(attributePaths = {"wishListItem"})
     public Optional<WishList>findById(int wishId) {
         return wishListRepository.findById(wishId);
     }
