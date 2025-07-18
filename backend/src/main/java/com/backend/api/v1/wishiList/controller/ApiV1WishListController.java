@@ -70,17 +70,17 @@ public class ApiV1WishListController {
     @Transactional
     @Operation(summary = "위시리스트 삭제")
     public void deleteWishList(
-            @RequestParam int wishId) {
+            @RequestParam(name = "wishListId") int wishId) {
         WishList wishlist = wishListService.findById(wishId)
                 .orElseThrow(() -> new EntityNotFoundException("위시리스트를 찾을 수 없습니다."));
         wishListService.deleteWishList(wishlist);
     }
 
-    @PutMapping("/{wishId}")
+    @PutMapping
     @Transactional
     @Operation(summary = "위시리스트 및 아이템 수정")
     public int updateWishList(
-            @PathVariable int wishId,
+            @RequestParam(name = "wishListId") int wishId,
             @RequestBody WishListAddReqDto reqBody) {
         //변경 위시리스트 조회
         WishList wishlist = wishListService.findById(wishId)
@@ -104,10 +104,10 @@ public class ApiV1WishListController {
         return wishlist.getWishId();
     }
 
-    @GetMapping("/{wishId}")
+    @GetMapping
     @Operation(summary = "위시리스트의 아이템 조회")
     public List<WishListItemDto> getWishListItems(
-            @PathVariable int wishId
+            @RequestParam(name = "wishListId") int wishId
     ){  //위시리스트 조회
         WishList wishlist = wishListService.findById(wishId)
                 .orElseThrow(() -> new EntityNotFoundException("위시리스트를 찾을 수 없습니다."));
