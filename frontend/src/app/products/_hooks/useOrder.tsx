@@ -114,7 +114,7 @@ export function useOrder() {
     );
   };
 
-  //🟡 상품 목록 json 형태로 가져오는 코드
+  //상품 목록 json 형태로 가져오는 코드
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -130,12 +130,41 @@ export function useOrder() {
     fetchProducts();
   }, []);
 
+  // 위시리스트의 정보를 조회한 후 상품목록과 회원정보를 받는다.
+  useEffect(() => {
+    if (!wishListId) return;
+
+    const fetchWishListData = async () => {
+      try {
+        const res = await fetch(
+          `${NEXT_PUBLIC_API_BASE_URL}/api/v1/wishlist/${wishListId}`
+        );
+
+        if (!res.ok) {
+          throw new Error("위시리스트 조회 실패");
+        }
+
+        const data = await res.json();
+
+        setCartItems(data.items); // 서버에서 { product: {...}, quantity } 형식으로 줘야 함
+        setEmail(data.email);
+        setAddress(data.address);
+        setZipCode(data.zipCode);
+      } catch (error) {
+        console.error("위시리스트 로딩 오류:", error);
+      }
+    };
+
+    fetchWishListData();
+  }, [wishListId]);
+
   return {
     productList,
     cartItems,
     email,
     address,
     zipCode,
+    wishListId,
     setEmail,
     setAddress,
     setZipCode,
