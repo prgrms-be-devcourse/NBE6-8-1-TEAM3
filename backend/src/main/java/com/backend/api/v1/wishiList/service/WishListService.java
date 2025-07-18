@@ -2,6 +2,8 @@ package com.backend.api.v1.wishiList.service;
 
 
 import com.backend.api.v1.products.entity.Products;
+import com.backend.api.v1.wishiList.controller.ApiV1WishListController;
+import com.backend.api.v1.wishiList.dto.WishListAddReqDto;
 import com.backend.api.v1.wishiList.entity.WishListItem;
 import com.backend.api.v1.wishiList.entity.WishList;
 import com.backend.api.v1.wishiList.repository.WishListRepository;
@@ -29,16 +31,32 @@ public class WishListService {
         return wishListRepository.save(wishList);
     }
     //위시리스트 생성 (매개값 객체로 받기 ver)
-    public WishList createWishList(WishList wishList) {
+    public WishList createWishList(WishListAddReqDto wishDto) {
+        WishList wishList = new WishList(
+                wishDto.email(),
+                wishDto.address(),
+                wishDto.zipCode(),
+                wishDto.totalQuantity(),
+                wishDto.totalPrice()
+        );
         wishListRepository.save(wishList);
         return wishList;
     }
 
-    //위시 리스트 수정
+    //위시 리스트 수정 매개값 다받 ver
     public void modify(WishList wishlist, String email, String address, String zipCode, int totalCount, int totalPrice) {
-        wishlist.modify(email, address, totalCount, totalPrice);
+        wishlist.modify(email, address, zipCode, totalCount, totalPrice);
     }
-
+    //위시 리스트 수정 매개값 객체로 받기 ver
+    public void modify(WishList wishlist, WishListAddReqDto wishDto) {
+        wishlist.modify(
+                wishDto.email(),
+                wishDto.address(),
+                wishDto.zipCode(),
+                wishDto.totalQuantity(),
+                wishDto.totalPrice()
+        );
+    }
     //위시 리스트 삭제
     public void deleteWishList(WishList wishlist) {
         wishListRepository.delete(wishlist);
