@@ -152,7 +152,7 @@ export function useOrder() {
         const data = await res.json();
         console.log(data);
 
-        setCartItems(data.items); // 서버에서 { product: {...}, quantity } 형식으로 줘야 함
+        setCartItems(data.wishListItems); // 서버에서 { product: {...}, quantity } 형식으로 줘야 함
         setEmail(data.email);
         setAddress(data.address);
         setZipCode(data.zipCode);
