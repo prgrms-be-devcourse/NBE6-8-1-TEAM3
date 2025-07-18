@@ -38,10 +38,11 @@ public class WishList {
         this.totalPrice = totalPrice;
     }
 
-    public void modify(String email, String address, int totalCount, int totalPrice) {
+    public void modify(String email, String address, String zipCode, int totalCount, int totalPrice) {
         this.email = email;
         this.address = address;
         this.totalCount = totalCount;
+        this.zipCode = zipCode;
         this.totalPrice = totalPrice;
     }
 
