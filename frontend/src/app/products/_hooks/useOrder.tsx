@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -20,11 +21,14 @@ type CartItem = {
 
 export function useOrder() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [productList, setProductList] = useState<Product[]>([]);
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [zipCode, setZipCode] = useState("");
+  const wishListId = searchParams.get("wishListId");
 
   // 클릭시, carItem에 아이템을 추가한다.
   const handleAddToCart = (product: Product) => {
