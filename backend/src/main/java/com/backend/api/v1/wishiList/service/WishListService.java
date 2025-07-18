@@ -68,6 +68,7 @@ public class WishListService {
     //위시 리스트 아이템 추가
     public void addItem(WishList wishlist, Products product, int count) {
         WishListItem wishListItem = new WishListItem(wishlist, product, count);
+        wishlist.getWishListItem().add(wishListItem);
     }
 
     //위시 리스트 아이템 단건 삭제

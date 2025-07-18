@@ -5,7 +5,6 @@ import com.backend.api.v1.wishiList.entity.WishList;
 import java.util.List;
 
 public record WishListDto(
-
         String email,
         String address,
         String zipCode,
