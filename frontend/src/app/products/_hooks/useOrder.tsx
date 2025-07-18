@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -20,11 +21,14 @@ type CartItem = {
 
 export function useOrder() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [productList, setProductList] = useState<Product[]>([]);
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [zipCode, setZipCode] = useState("");
+  const wishListId = searchParams.get("wishListId");
 
   // 클릭시, carItem에 아이템을 추가한다.
   const handleAddToCart = (product: Product) => {
@@ -80,8 +84,13 @@ export function useOrder() {
     };
 
     try {
-      const res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/v1/wishlist/`, {
-        method: "POST",
+      const method = wishListId ? "PUT" : "POST";
+      const url = wishListId
+        ? `${NEXT_PUBLIC_API_BASE_URL}/api/v1/wishlist/?wishListId=${wishListId}`
+        : `${NEXT_PUBLIC_API_BASE_URL}/api/v1/wishlist/`;
+
+      const res = await fetch(url, {
+        method,
         headers: {
           "Content-Type": "application/json",
         },
@@ -110,7 +119,7 @@ export function useOrder() {
     );
   };
 
-  //🟡 상품 목록 json 형태로 가져오는 코드
+  //상품 목록 json 형태로 가져오는 코드
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -126,12 +135,42 @@ export function useOrder() {
     fetchProducts();
   }, []);
 
+  // 위시리스트의 정보를 조회한 후 상품목록과 회원정보를 받는다.
+  useEffect(() => {
+    if (!wishListId) return;
+
+    const fetchWishListData = async () => {
+      try {
+        const res = await fetch(
+          `${NEXT_PUBLIC_API_BASE_URL}/api/v1/wishlist/?wishListId=${wishListId}`
+        );
+
+        if (!res.ok) {
+          throw new Error("위시리스트 조회 실패");
+        }
+
+        const data = await res.json();
+        console.log(data);
+
+        setCartItems(data.wishListItems); // 서버에서 { product: {...}, quantity } 형식으로 줘야 함
+        setEmail(data.email);
+        setAddress(data.address);
+        setZipCode(data.zipCode);
+      } catch (error) {
+        console.error("위시리스트 로딩 오류:", error);
+      }
+    };
+
+    fetchWishListData();
+  }, [wishListId]);
+
   return {
     productList,
     cartItems,
     email,
     address,
     zipCode,
+    wishListId,
     setEmail,
     setAddress,
     setZipCode,

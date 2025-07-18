@@ -99,5 +99,4 @@ public class ApiV1WishListController {
         //WishListDto로 변환하여 반환
         return new WishListDto(wishlist);
     }
-
 }
