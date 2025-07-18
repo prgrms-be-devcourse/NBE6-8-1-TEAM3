@@ -84,8 +84,13 @@ export function useOrder() {
     };
 
     try {
-      const res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/v1/wishlist/`, {
-        method: "POST",
+      const method = wishListId ? "PUT" : "POST";
+      const url = wishListId
+        ? `${NEXT_PUBLIC_API_BASE_URL}/api/v1/wishlist/?wishListId=${wishListId}`
+        : `${NEXT_PUBLIC_API_BASE_URL}/api/v1/wishlist/`;
+
+      const res = await fetch(url, {
+        method,
         headers: {
           "Content-Type": "application/json",
         },
@@ -137,7 +142,7 @@ export function useOrder() {
     const fetchWishListData = async () => {
       try {
         const res = await fetch(
-          `${NEXT_PUBLIC_API_BASE_URL}/api/v1/wishlist/${wishListId}`
+          `${NEXT_PUBLIC_API_BASE_URL}/api/v1/wishlist/?wishListId=${wishListId}`
         );
 
         if (!res.ok) {
@@ -145,6 +150,7 @@ export function useOrder() {
         }
 
         const data = await res.json();
+        console.log(data);
 
         setCartItems(data.items); // 서버에서 { product: {...}, quantity } 형식으로 줘야 함
         setEmail(data.email);
