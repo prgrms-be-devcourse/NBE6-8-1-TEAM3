@@ -4,6 +4,7 @@ package com.backend.api.v1.wishiList.controller;
 import com.backend.api.v1.products.entity.Products;
 import com.backend.api.v1.products.service.ProductsService;
 import com.backend.api.v1.wishiList.dto.WishListAddReqDto;
+import com.backend.api.v1.wishiList.dto.WishListDto;
 import com.backend.api.v1.wishiList.dto.WishListItemAddReqDto;
 import com.backend.api.v1.wishiList.dto.WishListItemDto;
 import com.backend.api.v1.wishiList.entity.WishList;
@@ -34,34 +35,17 @@ public class ApiV1WishListController {
     @PostMapping
     @Transactional
     @Operation(summary = "위시리스트 생성 및 위시아이템 추가")
-    public int createOrUpdateWishList(
+    public int createWishList(
             @RequestBody WishListAddReqDto reqBody) {
-        WishList wishlist;
-        //위시리스트가 없으면 생성
-        if(wishListService.findByEmail(reqBody.email()).isEmpty()){
+        //위시 리스트 생성
+        WishList wishlist = wishListService.createWishList(reqBody);
 
-            //매개값 다받기 ver
-            //wishlist = wishListService.createWishList(
-                    //reqBody.email(), reqBody.address(), reqBody.zipCode(), reqBody.totalQuantity(), reqBody.totalPrice());
-            //매개값 객체로 받기 ver
-            wishlist = wishListService.createWishList(reqBody);
-        }
-        else{
-            //위시리스트가 있으면 불러오기
-            wishlist = wishListService.findByEmail(reqBody.email()).get();
-        }
-
-        //위시 리스트 정보 업데이트 매개값 다받기 ver
-        //wishListService.modify(wishlist, reqBody.email(), reqBody.address(), reqBody.zipCode(), reqBody.totalQuantity(), reqBody.totalPrice());
-        //위시 리스트 정보 업데이트 객체로 전송
-        wishListService.modify(wishlist, reqBody);
-
-        //위시 리스트 처리 후 아이템 생성
+        //위시 아이템 생성
         for(WishListItemAddReqDto itemDto : reqBody.items()) {
             Products product = productService.findById(itemDto.id()).get();
             wishListService.addItem(wishlist, product, itemDto.quantity());
         }
-        //추가 후 위시리스트아이디만 리턴
+        //추가 후 위시리스트 아이디만 리턴
         return wishlist.getWishId();
     }
 
@@ -105,19 +89,15 @@ public class ApiV1WishListController {
     }
 
     @GetMapping
-    @Operation(summary = "위시리스트의 아이템 조회")
-    public List<WishListItemDto> getWishListItems(
+    @Operation(summary = "위시리스트 조회")
+    public WishListDto getWishListItems(
             @RequestParam(name = "wishListId") int wishId
     ){  //위시리스트 조회
         WishList wishlist = wishListService.findById(wishId)
                 .orElseThrow(() -> new EntityNotFoundException("위시리스트를 찾을 수 없습니다."));
 
-        //위시리스트 아이템 리스트 반환
-        return wishlist
-                .getWishListItem()
-                .stream()
-                .map(WishListItemDto::new)
-                .toList();
+        //WishListDto로 변환하여 반환
+        return new WishListDto(wishlist);
     }
 
 }

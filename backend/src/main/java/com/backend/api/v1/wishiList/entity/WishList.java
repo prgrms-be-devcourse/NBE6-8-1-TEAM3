@@ -22,9 +22,7 @@ public class WishList {
     @OneToMany(mappedBy = "wishList", cascade = {PERSIST, REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<WishListItem> wishListItem = new ArrayList<>();
 
-    @Column(unique = true) //한 이메일 당 하나의 위시리스트만 존재
     private String email;
-
     private String address;
     private String zipCode;
     private int totalCount;
