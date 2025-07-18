@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/wishlist/")
+@RequestMapping("/api/v1/wishlist")
 @Tag(name = "ApiV1WishListController", description = "API 위시리스트 컨트롤러")
 public class ApiV1WishListController {
     private final WishListService wishListService;
