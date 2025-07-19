@@ -1,6 +1,8 @@
 package com.backend.api.v1.orders.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +24,7 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private int ordersId;
+
 
     private String email;
     private LocalDateTime ordersDate;
