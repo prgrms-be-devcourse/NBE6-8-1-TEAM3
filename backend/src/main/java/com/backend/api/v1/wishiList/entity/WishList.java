@@ -1,6 +1,10 @@
 package com.backend.api.v1.wishiList.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,12 +24,21 @@ public class WishList {
     private int wishId;
 
     @OneToMany(mappedBy = "wishList", cascade = {PERSIST, REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
+    @NotEmpty
     private List<WishListItem> wishListItem = new ArrayList<>();
 
+    @NotBlank
+    @Size(min= 5, max = 100)
     private String email;
+    @NotBlank
+    @Size(min = 4, max = 100)
     private String address;
+    @NotBlank
+    @Size(min = 5, max = 5)
     private String zipCode;
+    @NotBlank
     private int totalCount;
+    @NotBlank
     private int totalPrice;
 
     public WishList(String email, String address,String zipCode, int totalCount, int totalPrice) {
