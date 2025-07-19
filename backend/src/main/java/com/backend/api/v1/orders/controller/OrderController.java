@@ -8,7 +8,8 @@ import com.backend.api.v1.wishiList.repository.WishListRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,15 +25,17 @@ public class OrderController {
     private final WishListRepository wishListRepository;
 
     @PostMapping("")
-    @Operation(summary = "위시리트스 기반 주문 생성 및 주문 추가")
-    public String createOrder(@RequestBody OrderDto request) {
+    @Operation(summary = "위시리스트 기반 주문 생성 및 주문 추가")
+    public ResponseEntity<?> createOrder(@RequestBody OrderDto request) {
         int wishListId = request.getWishListId();
         Optional<WishList> wishList = wishListRepository.findById(wishListId);
 
         if (wishList.isPresent()) {
-            return ordersService.createOrders(wishList.get());
+            Orders orders = ordersService.createOrders(wishList.get());
+            return ResponseEntity.ok(orders);
         } else {
-            return "해당 id의 withList가 존재하지 않음";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("해당 id의 wishList가 존재하지 않습니다.");
         }
     }
 

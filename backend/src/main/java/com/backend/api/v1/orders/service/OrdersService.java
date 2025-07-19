@@ -70,7 +70,7 @@ public class OrdersService {
     }
 
     @Transactional
-    public String createOrders(WishList wishList) {
+    public Orders createOrders(WishList wishList) {
         String email = wishList.getEmail();
         String address = wishList.getAddress();
         LocalDateTime ordersDate = LocalDateTime.now();
@@ -89,8 +89,6 @@ public class OrdersService {
             order.addOrderItem(orderItem);
         }
 
-        orderRepository.save(order);
-
-        return "주문 완료되었습니다.";
+        return orderRepository.save(order);
     }
 }
