@@ -2,6 +2,7 @@ package com.backend.api.v1.orders.controller;
 
 import com.backend.api.v1.orders.dto.OrderDto;
 import com.backend.api.v1.orders.dto.ErrorResponse;
+import com.backend.api.v1.orders.dto.OrderResponseDto;
 import com.backend.api.v1.orders.entity.Orders;
 import com.backend.api.v1.orders.service.OrdersService;
 import com.backend.api.v1.wishiList.entity.WishList;
@@ -34,7 +35,8 @@ public class OrderController {
 
         if (wishList.isPresent()) {
             Orders orders = ordersService.createOrders(wishList.get());
-            return ResponseEntity.ok(orders);
+            OrderResponseDto responseDto = ordersService.toDto(orders);
+            return ResponseEntity.ok(responseDto);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ErrorResponse("해당 id의 wishList가 존재하지 않습니다.", 404));
