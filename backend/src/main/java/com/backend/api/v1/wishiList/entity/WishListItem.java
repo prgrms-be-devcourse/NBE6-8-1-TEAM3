@@ -18,13 +18,11 @@ public class WishListItem {
     private int wishListItemId;
 
     //위시리스트id 연결
-    @ManyToOne(optional = false) // JPA 레벨에서 null 방지
-    @JoinColumn(name = "wishId", nullable = false) // DB DDL에서 NOT NULL 제약조건 추가
+    @ManyToOne
     private WishList wishList;
 
     //상품id 연결
-    @ManyToOne(fetch = FetchType.LAZY, optional = false) // JPA 레벨에서 null 방지
-    @JoinColumn(name = "wishId", nullable = false) // DB DDL에서 NOT NULL 제약조건 추가
+    @ManyToOne(fetch = FetchType.LAZY)
     private Products products;
 
     @NotNull
