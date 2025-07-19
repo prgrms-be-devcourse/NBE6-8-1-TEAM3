@@ -1,10 +1,12 @@
 package com.backend.api.v1.orders.controller;
 
 import com.backend.api.v1.orders.dto.OrderDto;
+import com.backend.api.v1.orders.entity.ErrorResponse;
 import com.backend.api.v1.orders.entity.Orders;
 import com.backend.api.v1.orders.service.OrdersService;
 import com.backend.api.v1.wishiList.entity.WishList;
 import com.backend.api.v1.wishiList.repository.WishListRepository;
+import com.backend.api.v1.wishiList.service.WishListService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -36,7 +38,7 @@ public class OrderController {
             return ResponseEntity.ok(orders);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("해당 id의 wishList가 존재하지 않습니다.");
+                    .body(new ErrorResponse("해당 id의 wishList가 존재하지 않습니다.", 404));
         }
     }
 
