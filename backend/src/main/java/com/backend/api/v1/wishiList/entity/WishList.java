@@ -24,7 +24,6 @@ public class WishList {
     private int wishId;
 
     @OneToMany(mappedBy = "wishList", cascade = {PERSIST, REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
-    @NotEmpty
     private List<WishListItem> wishListItem = new ArrayList<>();
 
     @NotBlank
