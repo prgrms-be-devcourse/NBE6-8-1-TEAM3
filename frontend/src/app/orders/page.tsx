@@ -1,221 +1,98 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { useOrder } from "./_hooks/useOrder";
 import { useRouter } from "next/navigation";
 
-// 상품, 주문자 정보 타입 정의
-type Product = {
-  id: number;
-  productName: string;
-  productPrice: number;
-};
-
-type Orders = {
-  email: string;
-  address: string;
-  zipCode: string;
-};
-
-// 주문목록(왼쪽) 컴포넌트
-function OrderList({
-  product,
-  quantity,
-  totalPrice,
-}: {
-  product: Product;
-  quantity: number;
-  totalPrice: number;
-}) {
+// 주문자 정보 컴포넌트
+function OrdererInfo({ orders }: { orders: { email: string; address: string; zipCode: string } }) {
   return (
-    <div className="flex flex-col justify-between h-full">
-      <div className="text-2xl font-bold mb-8">주문목록</div>
-      <div className="text-xl mb-8">
-        {product.productName} &nbsp; x {quantity}
-      </div>
-      <div className="text-xl font-semibold">
-        총 금액 &nbsp; {totalPrice.toLocaleString()} 원
-      </div>
-    </div>
+    <section className="w-full md:w-1/3 flex flex-col justify-between text-lg h-full">
+      <h2 className="text-2xl font-bold mb-8">주문자 정보</h2>
+      <div className="mb-6">이메일<br /><span className="font-normal">{orders.email || "-"}</span></div>
+      <div className="mb-6">주소<br /><span className="font-normal">{orders.address || "-"}</span></div>
+      <div>우편주소<br /><span className="font-normal">{orders.zipCode || "-"}</span></div>
+    </section>
   );
 }
 
-// 주문자 정보(오른쪽) 컴포넌트 (input)
-function OrdererInfo({
-  orders,
-  setOrders,
-}: {
-  orders: Orders;
-  setOrders: (o: Orders) => void;
-}) {
+// 주문 상품 목록 컴포넌트
+function OrderList({ cartItems }: { cartItems: { product: { productName: string; productPrice: number }; quantity: number }[] }) {
   return (
-    <div className="flex flex-col justify-between text-lg h-full">
-      <div className="mb-6">
-        이메일
-        <br />
-        <input
-          className="font-normal border rounded p-1 w-56"
-          type="email"
-          value={orders.email}
-          onChange={(e) => setOrders({ ...orders, email: e.target.value })}
-        />
+    <section className="w-full md:w-2/3">
+      <h2 className="text-2xl font-bold mb-8">주문목록</h2>
+      {cartItems.length > 0 ? (
+        cartItems.map((item, idx) => (
+          <div key={idx} className="text-xl mb-2">
+            {item.product.productName} &nbsp; x {item.quantity}
+          </div>
+        ))
+      ) : (
+        <div className="text-gray-500">주문 상품이 없습니다.</div>
+      )}
+      <div className="text-xl font-semibold mt-8">
+        총 금액 &nbsp; {cartItems.reduce((sum, item) => sum + item.product.productPrice * item.quantity, 0).toLocaleString()} 원
       </div>
-      <div className="mb-6">
-        주소
-        <br />
-        <input
-          className="font-normal border rounded p-1 w-56"
-          type="text"
-          value={orders.address}
-          onChange={(e) => setOrders({ ...orders, address: e.target.value })}
-        />
-      </div>
-      <div>
-        우편주소
-        <br />
-        <input
-          className="font-normal border rounded p-1 w-56"
-          type="text"
-          value={orders.zipCode}
-          onChange={(e) => setOrders({ ...orders, zipCode: e.target.value })}
-        />
-      </div>
-    </div>
+    </section>
   );
 }
 
-// 버튼 영역 컴포넌트
-function OrderButtons({
-  onModify,
-  onCancel,
-  onOrder,
-}: {
-  onModify: () => void;
-  onCancel: () => void;
-  onOrder: () => void;
-}) {
-  return (
-    <div className="w-full flex flex-row justify-between gap-8 mt-4">
-      <button
-        className="bg-gray-100 py-8 rounded-lg text-2xl font-semibold w-1/3"
-        onClick={onModify}
-      >
-        수정
-      </button>
-      <button
-        className="bg-gray-100 py-8 rounded-lg text-2xl font-semibold w-1/3"
-        onClick={onCancel}
-      >
-        취소
-      </button>
-      <button
-        className="bg-gray-100 py-8 rounded-lg text-2xl font-semibold w-1/3"
-        onClick={onOrder}
-      >
-        결제
-      </button>
-    </div>
-  );
-}
-
-const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
-export default function OrderPage() {
+export default function Page() {
+  const searchParams = useSearchParams();
+  const wishListId = searchParams.get("wishListId");
+  const { orders, cartItems } = useOrder(wishListId);
   const router = useRouter();
-  // 예시 데이터
-  const [product] = useState<Product>({
-    id: 1,
-    productName: "상품1",
-    productPrice: 5000,
-  });
-  const [quantity] = useState(2);
-  const [orders, setOrders] = useState<Orders>({
-    email: "",
-    address: "",
-    zipCode: "",
-  });
-  const totalPrice = product.productPrice * quantity;
 
-  // localStorage에서 회원정보 불러오기
-  useEffect(() => {
-    const saved = localStorage.getItem("ordersInfo");
-    if (saved) setOrders(JSON.parse(saved));
-  }, []);
-
-  // 수정 버튼: 입력값 저장 후 /products로 이동
-  const handleModify = () => {
-    localStorage.setItem("ordersInfo", JSON.stringify(orders));
-    router.push("/products");
-  };
-  // 취소 버튼: 입력값 초기화 후 /products로 이동
+  // 취소 버튼 클릭 시 localStorage 값 삭제 후 /products로 이동
   const handleCancel = () => {
-    localStorage.removeItem("ordersInfo");
-    setOrders({ email: "", address: "", zipCode: "" });
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("ordersInfo");
+      localStorage.removeItem("cartItems");
+    }
     router.push("/products");
   };
-  // 결제 버튼: 주문정보 서버로 전송
-  const handleOrder = async () => {
-    try {
-      const res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/v1/orders`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: orders.email,
-          address: orders.address,
-          zipCode: orders.zipCode,
-          productId: product.id,
-          quantity,
-          totalPrice,
-        }),
-      });
-      if (!res.ok) throw new Error("주문 실패");
-      alert("주문이 완료되었습니다!");
-      localStorage.removeItem("ordersInfo");
-      router.push("/products");
-    } catch (e) {
-      alert("주문 실패: " + e);
-    }
+
+  // 수정 버튼 클릭 시 /products로 이동 (localStorage 값은 그대로)
+  const handleEdit = () => {
+    router.push("/products");
+  };
+
+  // 결제 버튼 클릭 시 임시 alert
+  const handlePay = () => {
+    alert("결제 기능은 추후 구현 예정입니다.");
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100 py-8">
       <h1 className="text-4xl font-bold text-center mb-8">Grids & Circles</h1>
       <div className="w-full max-w-4xl bg-gray-400 p-12 rounded-lg flex flex-col items-center">
-        {/* 주문 정보 박스 */}
-        <div
-          className="w-full bg-gray-50 p-10 rounded-lg flex flex-row justify-between mb-16"
-          style={{ minHeight: 260 }}
-        >
-          <OrderList
-            product={product}
-            quantity={quantity}
-            totalPrice={totalPrice}
-          />
-          {/* 주문자 정보(오른쪽) - 예시 텍스트로 고정 */}
-          <div className="flex flex-col justify-between text-lg h-full">
-            <div className="mb-6">
-              이메일
-              <br />
-              <span className="font-normal">{"{EMAIL}"}</span>
-            </div>
-            <div className="mb-6">
-              주소
-              <br />
-              <span className="font-normal">{"{Address}"}</span>
-            </div>
-            <div>
-              우편주소
-              <br />
-              <span className="font-normal">{"{ZipCode}"}</span>
-            </div>
-          </div>
+        <div className="w-full bg-gray-50 p-10 rounded-lg flex flex-col md:flex-row justify-between mb-16" style={{ minHeight: 260 }}>
+          <OrderList cartItems={cartItems} />
+          <div className="w-8" />
+          <OrdererInfo orders={orders} />
         </div>
         {/* 버튼 영역 */}
-        <OrderButtons
-          onModify={handleModify}
-          onCancel={handleCancel}
-          onOrder={handleOrder}
-        />
+        <div className="flex gap-4 mt-4">
+          <button
+            className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+            onClick={handleEdit}
+          >
+            수정
+          </button>
+          <button
+            className="px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition"
+            onClick={handleCancel}
+          >
+            취소
+          </button>
+          <button
+            className="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+            onClick={handlePay}
+          >
+            결제
+          </button>
+        </div>
       </div>
     </div>
   );
-}
+} 
