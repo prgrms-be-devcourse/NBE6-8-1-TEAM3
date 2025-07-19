@@ -25,21 +25,12 @@ public class Orders {
     @GeneratedValue(strategy = IDENTITY)
     private int ordersId;
 
-    @NotBlank
-    @Size(min = 4, max = 100)
+
     private String email;
     private LocalDateTime ordersDate;
-
-    @NotBlank
     private int totalPrice;
     private boolean orderStatus;
-
-    @NotBlank
-    @Size(min = 5, max = 5)
     private String zipCode;
-
-    @NotBlank
-    @Size(min = 5, max = 255)
     private String address;
 
     @OneToMany(mappedBy = "orders", cascade = {PERSIST, REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
