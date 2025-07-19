@@ -33,6 +33,7 @@ type OrderFormProps = {
   email: string;
   address: string;
   zipCode: string;
+  cartItems: CartItem[];
   setEmail: (value: string) => void;
   setAddress: (value: string) => void;
   setZipCode: (value: string) => void;
@@ -115,6 +116,7 @@ function OrderForm({
   email,
   address,
   zipCode,
+  cartItems,
   setEmail,
   setAddress,
   setZipCode,
@@ -123,6 +125,7 @@ function OrderForm({
   const [emailError, setEmailError] = useState("");
   const [addressError, setAddressError] = useState("");
   const [zipCodeError, setZipCodeError] = useState("");
+  const [cartError, setCartError] = useState(""); // ✅ 장바구니 에러
 
   const validateEmail = (value: string) => {
     const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -160,6 +163,13 @@ function OrderForm({
     const isEmailValid = validateEmail(email);
     const isAddressValid = validateAddress(address);
     const isZipCodeValid = validateZipCode(zipCode);
+
+    if (cartItems.length == 0) {
+      setCartError("상품을 추가해주세요");
+      return;
+    }
+
+    setCartError("");
 
     if (isEmailValid && isAddressValid && isZipCodeValid) {
       handleOrderSubmit();
@@ -270,6 +280,7 @@ export default function Page() {
             email={email}
             address={address}
             zipCode={zipCode}
+            cartItems={cartItems}
             setEmail={setEmail}
             setAddress={setAddress}
             setZipCode={setZipCode}
