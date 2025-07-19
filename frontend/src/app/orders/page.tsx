@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useOrder } from "./_hooks/useOrder";
 import { useRouter } from "next/navigation";
 
+const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // 주문자 정보 컴포넌트
 function OrdererInfo({ orders }: { orders: { email: string; address: string; zipCode: string } }) {
   return (
@@ -54,12 +55,43 @@ export default function Page() {
 
   // 수정 버튼 클릭 시 /products로 이동 (localStorage 값은 그대로)
   const handleEdit = () => {
-    router.push("/products");
+    router.push(`/products?wishListId=${wishListId}`);
   };
 
-  // 결제 버튼 클릭 시 임시 alert
-  const handlePay = () => {
-    alert("결제 기능은 추후 구현 예정입니다.");
+  // 결제 버튼 클릭 시 /api/v1/orders로 wishListId 전송
+  const handlePay = async () => {
+    if (!wishListId) {
+      alert("주문 정보가 없습니다.");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/v1/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ wishListId }),
+      });
+
+      if (!res.ok) {
+        throw new Error("결제 처리 실패");
+      }
+
+      const responseData = await res.json();
+      console.log("결제 응답:", responseData);
+      alert("결제가 완료되었습니다!");
+
+      // 결제 완료 후 localStorage 정리
+      localStorage.removeItem("ordersInfo");
+      localStorage.removeItem("cartItems");
+
+      // 메인 페이지로 이동
+      router.push("/products");
+    } catch (error) {
+      console.error("결제 실패:", error);
+      alert("결제 중 오류가 발생했습니다.");
+    }
   };
 
   return (
