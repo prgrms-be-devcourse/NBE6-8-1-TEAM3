@@ -228,6 +228,8 @@ function OrderForm({
         <span className="text-blue-600">₩{totalPrice.toLocaleString()}</span>
       </div>
 
+      {cartError && <p className="text-red-500 text-sm mt-1">{cartError}</p>}
+
       <button
         onClick={onSubmit}
         className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
