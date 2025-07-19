@@ -15,7 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -29,17 +31,21 @@ public class OrderController {
 
     @PostMapping("")
     @Operation(summary = "위시리스트 기반 주문 생성 및 주문 추가")
-    public ResponseEntity<?> createOrder(@Valid @RequestBody OrderDto request) {
+    public ResponseEntity<Map<String, Object>> createOrder(@RequestBody OrderDto request) {
         int wishListId = request.getWishListId();
         Optional<WishList> wishList = wishListRepository.findById(wishListId);
 
+        Map<String, Object> response = new HashMap<>();
+
         if (wishList.isPresent()) {
-            Orders orders = ordersService.createOrders(wishList.get());
-            OrderResponseDto responseDto = ordersService.toDto(orders);
-            return ResponseEntity.ok(responseDto);
+            String result = String.valueOf(ordersService.createOrders(wishList.get()));
+            response.put("message", result);
+            response.put("status", "success");
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ErrorResponse("해당 id의 wishList가 존재하지 않습니다.", 404));
+            response.put("message", "해당 id의 withList가 존재하지 않음");
+            response.put("status", "error");
+            return ResponseEntity.badRequest().body(response);
         }
     }
 
