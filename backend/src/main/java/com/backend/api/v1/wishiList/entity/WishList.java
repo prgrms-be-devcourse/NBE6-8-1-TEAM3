@@ -35,9 +35,9 @@ public class WishList {
     @NotBlank
     @Size(min = 5, max = 5)
     private String zipCode;
-    @NotBlank
+    @NotNull
     private int totalCount;
-    @NotBlank
+    @NotNull
     private int totalPrice;
 
     public WishList(String email, String address,String zipCode, int totalCount, int totalPrice) {
