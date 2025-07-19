@@ -54,7 +54,7 @@ export default function Page() {
 
   // 수정 버튼 클릭 시 /products로 이동 (localStorage 값은 그대로)
   const handleEdit = () => {
-    router.push("/products");
+    router.push(`/products?wishListId=${wishListId}`);
   };
 
   // 결제 버튼 클릭 시 임시 alert

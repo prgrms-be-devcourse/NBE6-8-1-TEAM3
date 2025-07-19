@@ -162,16 +162,16 @@ export function useOrder() {
         setZipCode(data.zipCode);
       } catch (error) {
         console.error("위시리스트 로딩 오류:", error);
+        // 서버에서 데이터를 불러오지 못했을 때 localStorage에서 불러오기
+        loadFromLocalStorage();
       }
     };
 
     fetchWishListData();
   }, [wishListId]);
 
-  // wishListId가 없을 때 localStorage에서 값 불러오기
-  useEffect(() => {
-    if (wishListId) return;
-
+  // localStorage에서 값 불러오는 함수
+  const loadFromLocalStorage = () => {
     // 주문자 정보
     const savedOrders = localStorage.getItem("ordersInfo");
     if (savedOrders) {
@@ -194,6 +194,12 @@ export function useOrder() {
         // 파싱 에러 무시
       }
     }
+  };
+
+  // wishListId가 없을 때 localStorage에서 값 불러오기
+  useEffect(() => {
+    if (wishListId) return;
+    loadFromLocalStorage();
   }, [wishListId]);
 
   return {
