@@ -34,14 +34,14 @@ export function useOrder() {
   const handleAddToCart = (product: Product) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find(
-          (item) => item.product.id === product.id
+        (item) => item.product.id === product.id
       );
 
       if (existingItem) {
         return prevItems.map((item) =>
-            item.product.id === product.id
-                ? { ...item, quantity: item.quantity + 1 }
-                : item
+          item.product.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       } else {
         return [...prevItems, { product, quantity: 1 }];
@@ -52,26 +52,29 @@ export function useOrder() {
   // 클릭시, carItem에 아이템을 버린다.
   const handleRemoveFromCart = (productId: number) => {
     setCartItems(
-        (prevItems) =>
-            prevItems
-                .map((item) =>
-                    item.product.id === productId
-                        ? { ...item, quantity: item.quantity - 1 }
-                        : item
-                )
-                .filter((item) => item.quantity > 0) // 수량이 0인 항목은 제거
+      (prevItems) =>
+        prevItems
+          .map((item) =>
+            item.product.id === productId
+              ? { ...item, quantity: item.quantity - 1 }
+              : item
+          )
+          .filter((item) => item.quantity > 0) // 수량이 0인 항목은 제거
     );
   };
 
   // 클릭시, 주문 정보를 서버로 전송
   const handleOrderSubmit = async () => {
     // 주문자 정보와 장바구니를 localStorage에 저장
-    localStorage.setItem("ordersInfo", JSON.stringify({ email, address, zipCode }));
+    localStorage.setItem(
+      "ordersInfo",
+      JSON.stringify({ email, address, zipCode })
+    );
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
 
     const totalQuantity = cartItems.reduce(
-        (sum, item) => sum + item.quantity,
-        0
+      (sum, item) => sum + item.quantity,
+      0
     );
     const totalPrice = calculateTotal();
 
@@ -90,8 +93,8 @@ export function useOrder() {
     try {
       const method = wishListId ? "PUT" : "POST";
       const url = wishListId
-          ? `${NEXT_PUBLIC_API_BASE_URL}/api/v1/wishlist?wishListId=${wishListId}`
-          : `${NEXT_PUBLIC_API_BASE_URL}/api/v1/wishlist`;
+        ? `${NEXT_PUBLIC_API_BASE_URL}/api/v1/wishlist?wishListId=${wishListId}`
+        : `${NEXT_PUBLIC_API_BASE_URL}/api/v1/wishlist`;
 
       const res = await fetch(url, {
         method,
@@ -118,8 +121,8 @@ export function useOrder() {
 
   const calculateTotal = () => {
     return cartItems.reduce(
-        (total, item) => total + item.quantity * item.product.productPrice,
-        0
+      (total, item) => total + item.quantity * item.product.productPrice,
+      0
     );
   };
 
@@ -146,7 +149,7 @@ export function useOrder() {
     const fetchWishListData = async () => {
       try {
         const res = await fetch(
-            `${NEXT_PUBLIC_API_BASE_URL}/api/v1/wishlist/?wishListId=${wishListId}`
+          `${NEXT_PUBLIC_API_BASE_URL}/api/v1/wishlist?wishListId=${wishListId}`
         );
 
         if (!res.ok) {
