@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @NoArgsConstructor
@@ -25,11 +23,11 @@ public class OrderItem {
     @ManyToOne(fetch = FetchType.LAZY)
     private Products products;
 
-    private int totalCount;
+    private int quantity;
 
-    public OrderItem(Orders orders, Products products, int totalCount) {
+    public OrderItem(Orders orders, Products products, int quantity) {
         this.orders = orders;
         this.products = products;
-        this.totalCount = totalCount;
+        this.quantity = quantity;
     }
 }

@@ -58,7 +58,7 @@ public class OrdersServiceTest {
 
         assertThat(findOrderItem.getOrders()).isEqualTo(orderItem.getOrders());
         assertThat(findOrderItem.getProducts()).isEqualTo(orderItem.getProducts());
-        assertThat(findOrderItem.getTotalCount()).isEqualTo(orderItem.getTotalCount());
+        assertThat(findOrderItem.getQuantity()).isEqualTo(orderItem.getQuantity());
     }
 
     @Test

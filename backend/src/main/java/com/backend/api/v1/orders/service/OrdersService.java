@@ -1,5 +1,7 @@
 package com.backend.api.v1.orders.service;
 
+import com.backend.api.v1.orders.dto.OrderItemDto;
+import com.backend.api.v1.orders.dto.OrderResponseDto;
 import com.backend.api.v1.orders.entity.OrderItem;
 import com.backend.api.v1.orders.entity.Orders;
 import com.backend.api.v1.orders.repository.OrderItemRepository;
@@ -90,5 +92,23 @@ public class OrdersService {
         }
 
         return orderRepository.save(order);
+    }
+
+    public OrderResponseDto toDto(Orders orders) {
+        List<OrderItemDto> orderItems = orders.getOrdersItems().stream()
+                .map(item -> new OrderItemDto(
+                        item.getProducts().getProductId(),
+                        item.getQuantity()
+                ))
+                .toList();
+
+        return new OrderResponseDto(
+                orders.getOrdersId(),
+                orders.getEmail(),
+                orders.getOrdersDate(),
+                orders.getTotalPrice(),
+                orders.isOrderStatus(),
+                orderItems
+        );
     }
 }
