@@ -2,6 +2,8 @@ package com.backend.api.v1.wishiList.entity;
 
 import com.backend.api.v1.products.entity.Products;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,13 +18,16 @@ public class WishListItem {
     private int wishListItemId;
 
     //위시리스트id 연결
-    @ManyToOne
+    @ManyToOne(optional = false) // JPA 레벨에서 null 방지
+    @JoinColumn(name = "wishId", nullable = false) // DB DDL에서 NOT NULL 제약조건 추가
     private WishList wishList;
 
     //상품id 연결
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false) // JPA 레벨에서 null 방지
+    @JoinColumn(name = "wishId", nullable = false) // DB DDL에서 NOT NULL 제약조건 추가
     private Products products;
 
+    @NotNull
     private int count;
 
     public WishListItem(WishList wishList, Products products, int count) {
