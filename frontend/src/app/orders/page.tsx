@@ -6,19 +6,42 @@ import { useRouter } from "next/navigation";
 
 const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // 주문자 정보 컴포넌트
-function OrdererInfo({ orders }: { orders: { email: string; address: string; zipCode: string } }) {
+function OrdererInfo({
+  orders,
+}: {
+  orders: { email: string; address: string; zipCode: string };
+}) {
   return (
     <section className="w-full md:w-1/3 flex flex-col justify-between text-lg h-full">
       <h2 className="text-2xl font-bold mb-8">주문자 정보</h2>
-      <div className="mb-6">이메일<br /><span className="font-normal">{orders.email || "-"}</span></div>
-      <div className="mb-6">주소<br /><span className="font-normal">{orders.address || "-"}</span></div>
-      <div>우편주소<br /><span className="font-normal">{orders.zipCode || "-"}</span></div>
+      <div className="mb-6">
+        이메일
+        <br />
+        <span className="font-normal">{orders.email || "-"}</span>
+      </div>
+      <div className="mb-6">
+        주소
+        <br />
+        <span className="font-normal">{orders.address || "-"}</span>
+      </div>
+      <div>
+        우편주소
+        <br />
+        <span className="font-normal">{orders.zipCode || "-"}</span>
+      </div>
     </section>
   );
 }
 
 // 주문 상품 목록 컴포넌트
-function OrderList({ cartItems }: { cartItems: { product: { productName: string; productPrice: number }; quantity: number }[] }) {
+function OrderList({
+  cartItems,
+}: {
+  cartItems: {
+    product: { productName: string; productPrice: number };
+    quantity: number;
+  }[];
+}) {
   return (
     <section className="w-full md:w-2/3">
       <h2 className="text-2xl font-bold mb-8">주문목록</h2>
@@ -32,7 +55,14 @@ function OrderList({ cartItems }: { cartItems: { product: { productName: string;
         <div className="text-gray-500">주문 상품이 없습니다.</div>
       )}
       <div className="text-xl font-semibold mt-8">
-        총 금액 &nbsp; {cartItems.reduce((sum, item) => sum + item.product.productPrice * item.quantity, 0).toLocaleString()} 원
+        총 금액 &nbsp;{" "}
+        {cartItems
+          .reduce(
+            (sum, item) => sum + item.product.productPrice * item.quantity,
+            0
+          )
+          .toLocaleString()}{" "}
+        원
       </div>
     </section>
   );
@@ -44,13 +74,37 @@ export default function Page() {
   const { orders, cartItems } = useOrder(wishListId);
   const router = useRouter();
 
-  // 취소 버튼 클릭 시 localStorage 값 삭제 후 /products로 이동
-  const handleCancel = () => {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("ordersInfo");
-      localStorage.removeItem("cartItems");
+  // 취소 버튼 클릭 시 localStorage 값 삭제 + db에 있는 wishList 삭제 후, /products로 이동
+  const handleCancel = async () => {
+    if (!wishListId) {
+      alert("취소할 위시리스트 정보가 없습니다.");
+      return;
     }
-    router.push("/products");
+
+    try {
+      const res = await fetch(
+        `${NEXT_PUBLIC_API_BASE_URL}/api/v1/wishlist?wishListId=${wishListId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("위시리스트 삭제 실패");
+      }
+
+      console.log("위시리스트 삭제 성공");
+
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("ordersInfo");
+        localStorage.removeItem("cartItems");
+      }
+
+      router.push("/products");
+    } catch (error) {
+      console.error("위시리스트 삭제 오류:", error);
+      alert("주문 취소 중 오류가 발생했습니다.");
+    }
   };
 
   // 수정 버튼 클릭 시 /products로 이동 (localStorage 값은 그대로)
@@ -98,7 +152,10 @@ export default function Page() {
     <div className="min-h-screen flex flex-col items-center bg-gray-100 py-8">
       <h1 className="text-4xl font-bold text-center mb-8">Grids & Circles</h1>
       <div className="w-full max-w-4xl bg-gray-400 p-12 rounded-lg flex flex-col items-center">
-        <div className="w-full bg-gray-50 p-10 rounded-lg flex flex-col md:flex-row justify-between mb-16" style={{ minHeight: 260 }}>
+        <div
+          className="w-full bg-gray-50 p-10 rounded-lg flex flex-col md:flex-row justify-between mb-16"
+          style={{ minHeight: 260 }}
+        >
           <OrderList cartItems={cartItems} />
           <div className="w-8" />
           <OrdererInfo orders={orders} />
@@ -127,4 +184,4 @@ export default function Page() {
       </div>
     </div>
   );
-} 
+}
