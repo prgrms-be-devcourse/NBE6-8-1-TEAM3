@@ -7,6 +7,7 @@ import com.backend.api.v1.wishiList.entity.WishList;
 import com.backend.api.v1.wishiList.repository.WishListRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class OrderController {
 
     @PostMapping("")
     @Operation(summary = "위시리스트 기반 주문 생성 및 주문 추가")
-    public ResponseEntity<?> createOrder(@RequestBody OrderDto request) {
+    public ResponseEntity<?> createOrder(@Valid @RequestBody OrderDto request) {
         int wishListId = request.getWishListId();
         Optional<WishList> wishList = wishListRepository.findById(wishListId);
 
