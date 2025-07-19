@@ -1,8 +1,7 @@
-package com.backend.api.v1.orders.entity;
+package com.backend.api.v1.orders.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
 
 @Getter
 @Setter

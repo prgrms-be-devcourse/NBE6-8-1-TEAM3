@@ -1,12 +1,11 @@
 package com.backend.api.v1.orders.controller;
 
 import com.backend.api.v1.orders.dto.OrderDto;
-import com.backend.api.v1.orders.entity.ErrorResponse;
+import com.backend.api.v1.orders.dto.ErrorResponse;
 import com.backend.api.v1.orders.entity.Orders;
 import com.backend.api.v1.orders.service.OrdersService;
 import com.backend.api.v1.wishiList.entity.WishList;
 import com.backend.api.v1.wishiList.repository.WishListRepository;
-import com.backend.api.v1.wishiList.service.WishListService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
