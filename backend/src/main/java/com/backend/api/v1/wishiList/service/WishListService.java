@@ -2,7 +2,6 @@ package com.backend.api.v1.wishiList.service;
 
 
 import com.backend.api.v1.products.entity.Products;
-import com.backend.api.v1.wishiList.controller.ApiV1WishListController;
 import com.backend.api.v1.wishiList.dto.WishListAddReqDto;
 import com.backend.api.v1.wishiList.entity.WishListItem;
 import com.backend.api.v1.wishiList.entity.WishList;
