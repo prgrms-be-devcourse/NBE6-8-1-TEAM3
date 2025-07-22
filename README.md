@@ -1,4 +1,20 @@
-# NBE6-8-1-TEAM3
+# ☕️ Grids & Cicles
+
+## 프로젝트 소개
+프로그래머스 백엔드 데브코스에서 1차 프로젝트로 진행한 카페 메뉴 관리 서비스입니다.
+
+## 시연영상
+https://www.youtube.com/watch?v=ympLLeUh2sg
+
+## 팀원 소개
+
+| 역할 | 이름 | GitHub 프로필 |
+| :--- | :--- | :--- |
+| **팀장** | 안수지 | <https://github.com/qkek123> |
+| **협업관리자** | 남기은 | <https://github.com/namgigun> |
+| **팀원** | 김선호 | <https://github.com/KSH0326> |
+| **팀원** | 오수혁 | <https://github.com/ohsoohyuk> |
+| **팀원** | 유광현 | <https://github.com/hyun2024> |
 
 ## 협업규칙
 1. 작업 전, Issues에 자신의 작업을 등록해주세요. 백엔드 작업의 경우 -> [BE] 이슈이름
@@ -38,3 +54,19 @@ Feat: "로그인 함수 추가" -> 제목
 
 Commit Message Convention의 자세한 설명은 아래 링크를 참고바랍니다. <br/>
 https://projectlog.tistory.com/57
+
+## 기술 스택
+
+![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white) ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+
+![H2](https://img.shields.io/badge/h2database-09476B.svg?&style=for-the-badge&logo=h2database&logoColor=#09476B)
+
+## 프로젝트 아키텍처
+
+<img width="600" height="430" alt="image" src="https://github.com/user-attachments/assets/22998c95-0001-42ec-8845-72f073badc6d" />
+
+## ERD
+<img width="600" height="572" alt="image" src="https://github.com/user-attachments/assets/9c7fddd3-0d75-40f8-bb58-d78469b8aea1" />
+
