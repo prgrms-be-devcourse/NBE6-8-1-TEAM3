@@ -64,7 +64,8 @@ https://projectlog.tistory.com/57
 ![H2](https://img.shields.io/badge/h2database-09476B.svg?&style=for-the-badge&logo=h2database&logoColor=#09476B)
 
 ## 프로젝트 아키텍처
-- 수정 후 업로드 예정
+<img width="913" height="430" alt="image" src="https://github.com/user-attachments/assets/535f6f8e-8daf-4929-8960-10bf3f9f3074" />
+
 
 ## ERD
-- 수정 후 업로드 예정
+<img width="700" height="472" alt="image" src="https://github.com/user-attachments/assets/049879e0-7131-4c56-ba20-453bfa6d3254" />
