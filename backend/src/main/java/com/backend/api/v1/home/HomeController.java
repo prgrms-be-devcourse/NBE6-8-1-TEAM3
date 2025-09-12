@@ -3,6 +3,7 @@ package com.backend.api.v1.home;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +15,9 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 @RestController
 @Tag(name = "HomeController", description = "홈 컨트롤러")
 public class HomeController {
+    @Value("${custom.secretWord}")
+    private String secretWord;
+
     @SneakyThrows
     @GetMapping(produces = TEXT_HTML_VALUE)
     @Operation(summary = "메인 페이지")
